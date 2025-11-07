@@ -26,7 +26,7 @@ struct IntVec {
     }
 };
 
-struct Map {
+struct Board {
     static constexpr char wall = '#';
     static constexpr char empty = ' ';
     static constexpr char player = '@';
@@ -44,7 +44,7 @@ struct Map {
         return horizontal && vertical;
     }
 
-    static Map hardcoded()
+    static Board hardcoded()
     {
         std::vector<std::string> rows = {
             "#####",
@@ -62,24 +62,24 @@ struct Map {
 namespace Render {
 static constexpr i32 tileSize = 64;
 
-void init(const Map& map)
+void init(const Board& board)
 {
-    InitWindow(map.width * Render::tileSize, map.height * Render::tileSize,
+    InitWindow(board.width * Render::tileSize, board.height * Render::tileSize,
                "Cocoban");
     SetTargetFPS(60);
 }
 
 Color tileColor(char tile)
 {
-    if (tile == Map::wall) {
+    if (tile == Board::wall) {
         return catpuccin::DarkGray.opaque();
-    } else if (tile == Map::empty) {
+    } else if (tile == Board::empty) {
         return catpuccin::Rosewater.opaque();
-    } else if (tile == Map::player) {
+    } else if (tile == Board::player) {
         return catpuccin::Red.opaque();
-    } else if (tile == Map::token) {
+    } else if (tile == Board::token) {
         return catpuccin::Blue.opaque();
-    } else if (tile == Map::hole) {
+    } else if (tile == Board::hole) {
         return catpuccin::Lavender.opaque();
     } else {
         Rgb black = {0, 0, 0};
@@ -97,12 +97,12 @@ enum class Direction {
 
 class Game {
 public:
-    Game(const Map& map): map(map) {}
+    Game(const Board& board): board(board) {}
 
     void render() const {
-        for (std::size_t x = 0; x < map.width; ++x) {
-            for (std::size_t y = 0; y < map.height; ++y) {
-                Color color = Render::tileColor(map.rows[y][x]);
+        for (std::size_t x = 0; x < board.width; ++x) {
+            for (std::size_t y = 0; y < board.height; ++y) {
+                Color color = Render::tileColor(board.rows[y][x]);
 
                 DrawRectangle(x * Render::tileSize, y * Render::tileSize,
                               Render::tileSize, Render::tileSize, color);
@@ -112,14 +112,14 @@ public:
     }
 
 private:
-    Map map;
+    Board board;
 };
 
 int main()
 {
-    Map map = Map::hardcoded();
-    Render::init(map);
-    Game game(map);
+    Board board = Board::hardcoded();
+    Render::init(board);
+    Game game(board);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
