@@ -37,6 +37,13 @@ struct Map {
 namespace Render {
 static constexpr i32 tileSize = 64;
 
+void init(const Map& map)
+{
+    InitWindow(map.width * Render::tileSize, map.height * Render::tileSize,
+               "Cocoban");
+    SetTargetFPS(60);
+}
+
 Color tileColor(char tile)
 {
     if (tile == Map::wall) {
@@ -59,12 +66,7 @@ Color tileColor(char tile)
 int main()
 {
     Map map = Map::hardcoded();
-
-    InitWindow(map.width * Render::tileSize, map.height * Render::tileSize,
-               "Cocoban");
-    SetTargetFPS(60);
-
-    const ColorMap cmap = ColorMap::Catpuccin();
+    Render::init(map);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
