@@ -31,6 +31,12 @@ Color tileColor(Board::Tile tile)
         return black.opaque();
     }
 }
+
+void fillTile(IntVec position, Color color)
+{
+    DrawRectangle(position.x * Render::tileSize, position.y * Render::tileSize,
+                  Render::tileSize, Render::tileSize, color);
+}
 };  // namespace Render
 
 class Game {
@@ -54,16 +60,11 @@ class Game {
                 IntVec position = {x, y};
                 Color color = Render::tileColor(board.at(position));
 
-                DrawRectangle(position.x * Render::tileSize,
-                              position.y * Render::tileSize, Render::tileSize,
-                              Render::tileSize, color);
+                Render::fillTile(position, color);
             }
         }
-
-        DrawRectangle(board.playerPosition.x * Render::tileSize,
-                      board.playerPosition.y * Render::tileSize,
-                      Render::tileSize, Render::tileSize,
-                      Render::tileColor(Board::Player));
+        Render::fillTile(board.playerPosition,
+                         Render::tileColor(Board::Player));
         DrawFPS(0, 0);
     }
 
