@@ -69,6 +69,10 @@ class Game {
         IntVec movement = action.asVec();
         IntVec newPosition = this->player + movement;
 
+        if (board.at(newPosition) == Board::Wall) {
+            return;
+        }
+
         if (board.inBounds(newPosition)) {
             this->player = newPosition;
         }
