@@ -1,0 +1,4 @@
+.DS_Store
+local_*
+build
+.cache
