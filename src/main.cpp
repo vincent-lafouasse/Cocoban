@@ -1,3 +1,6 @@
+#include <array>
+#include <unordered_set>
+
 #include <raylib.h>
 
 #include "Board.hpp"
@@ -103,15 +106,33 @@ int main()
     Render::init(board);
     Game game(board);
 
+    using RaylibKey = int;
+    std::unordered_set<RaylibKey> keyDowns;
+
+    auto keys = [](Direction direction) {
+        switch (direction.inner) {
+            case Direction::Up:
+                return KEY_UP;
+            case Direction::Down:
+                return KEY_DOWN;
+            case Direction::Left:
+                return KEY_LEFT;
+            case Direction::Right:
+                return KEY_RIGHT;
+        }
+    };
+
     while (!WindowShouldClose()) {
-        if (IsKeyDown(KEY_RIGHT))
-            game.update(Direction::Right);
-        if (IsKeyDown(KEY_LEFT))
-            game.update(Direction::Left);
-        if (IsKeyDown(KEY_UP))
-            game.update(Direction::Up);
-        if (IsKeyDown(KEY_DOWN))
-            game.update(Direction::Down);
+        for (const Direction& direction : Direction::all()) {
+            int key = keys(direction);
+
+            if (!keyDowns.contains(key) && IsKeyDown(key)) {
+                keyDowns.insert(key);
+                game.update(direction);
+            } else if (keyDowns.contains(key) && IsKeyUp(key)) {
+                keyDowns.erase(key);
+            }
+        }
 
         BeginDrawing();
         game.render();
