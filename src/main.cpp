@@ -14,7 +14,7 @@ void init(const Board& board)
     SetTargetFPS(60);
 }
 
-Color tileColor(char tile)
+Color tileColor(Board::Tile tile)
 {
     if (tile == Board::Wall) {
         return catpuccin::DarkGray.opaque();
@@ -51,10 +51,12 @@ class Game {
     {
         for (i32 x = 0; x < board.width(); ++x) {
             for (i32 y = 0; y < board.height(); ++y) {
-                Color color = Render::tileColor(board.rows[y][x]);
+                IntVec position = {x, y};
+                Color color = Render::tileColor(board.at(position));
 
-                DrawRectangle(x * Render::tileSize, y * Render::tileSize,
-                              Render::tileSize, Render::tileSize, color);
+                DrawRectangle(position.x * Render::tileSize,
+                              position.y * Render::tileSize, Render::tileSize,
+                              Render::tileSize, color);
             }
         }
 
