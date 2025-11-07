@@ -3,41 +3,51 @@
 #include "colors/ColorMap.hpp"
 #include "ints.hpp"
 
+namespace Render {
+static constexpr i32 tileSize = 64;
+static constexpr Rgb wallColor = catpuccin::DarkGray;
+static constexpr Rgb floorColor = catpuccin::Rosewater;
+static constexpr Rgb playerColor = catpuccin::Red;
+static constexpr Rgb tokenColor = catpuccin::Blue;
+static constexpr Rgb holeColor = catpuccin::Lavender;
+};  // namespace Render
+
 struct IntVec {
     int x;
     int y;
 };
 
-struct Grid {
-    static constexpr i32 tileSize = 64;
-    static constexpr i32 width = 7;
-    static constexpr i32 height = 5;
-
-    static i32 index(IntVec v)
-    {
-        if (v.x < 0 || v.x >= Grid::width) {
-            return -1;
-        }
-        if (v.y < 0 || v.y >= Grid::height) {
-            return -1;
-        }
-
-        return v.x + Grid::width * v.y;
-    }
-};
-
 struct Map {
-    static constexpr char blank = '_';
-    static constexpr char wall = 'X';
-    static constexpr char walkable = ' ';
-    static constexpr char player = 'P';
-    static constexpr char token = '-';
-    static constexpr char hole = 'O';
+    static constexpr char wall = '#';
+    static constexpr char empty = ' ';
+    static constexpr char player = '@';
+    static constexpr char token = '$';
+    static constexpr char hole = '.';
+
+    std::vector<std::string> rows;
+    std::size_t width;
+    std::size_t height;
+
+    static Map hardcoded()
+    {
+        std::vector<std::string> rows = {
+            "#####",
+            "#.$@#",
+            "#####",
+        };
+
+        std::size_t width = rows[0].size();
+        std::size_t height = rows.size();
+
+        return {rows, width, height};
+    }
 };
 
 int main()
 {
-    InitWindow(Grid::width * Grid::tileSize, Grid::height * Grid::tileSize,
+    Map map = Map::hardcoded();
+
+    InitWindow(map.width * Render::tileSize, map.height * Render::tileSize,
                "Cocoban");
     SetTargetFPS(60);
 
@@ -45,13 +55,13 @@ int main()
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        for (i32 x = 0; x < Grid::width; ++x) {
-            for (i32 y = 0; y < Grid::height; ++y) {
-                const float progression = static_cast<float>(x + y) /
-                                          (Grid::height + Grid::width - 2);
-                DrawRectangle(x * Grid::tileSize, y * Grid::tileSize,
-                              Grid::tileSize, Grid::tileSize,
-                              cmap.get(progression).opaque());
+        for (std::size_t x = 0; x < map.width; ++x) {
+            for (std::size_t y = 0; y < map.height; ++y) {
+                Rgb color = Render::floorColor;
+
+                DrawRectangle(x * Render::tileSize, y * Render::tileSize,
+                              Render::tileSize, Render::tileSize,
+                              color.opaque());
             }
         }
         DrawFPS(0, 0);
