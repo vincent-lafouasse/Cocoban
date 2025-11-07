@@ -106,7 +106,7 @@ class Game {
 
 int main()
 {
-    Board board = Board::load("levels/l1.map");
+    Board board = Board::load("levels/l2.map");
     board.log();
 
     Render::init(board);
