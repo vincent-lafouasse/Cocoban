@@ -9,7 +9,8 @@ struct Rgb {
     u8 green;
     u8 blue;
 
-    [[nodiscard]] static constexpr Rgb fromHex(u32 hex) {
+    [[nodiscard]] static constexpr Rgb fromHex(u32 hex)
+    {
         u8 b = hex & 0xff;
         hex >>= 8;
         u8 g = hex & 0xff;
@@ -19,11 +20,13 @@ struct Rgb {
         return {r, g, b};
     }
 
-    [[nodiscard]] constexpr Color withAlpha(u8 alpha) const {
+    [[nodiscard]] constexpr Color withAlpha(u8 alpha) const
+    {
         return {red, green, blue, alpha};
     }
 
-    [[nodiscard]] constexpr Color opaque() const {
+    [[nodiscard]] constexpr Color opaque() const
+    {
         return this->withAlpha(0xff);
     }
 };

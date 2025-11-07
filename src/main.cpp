@@ -13,7 +13,8 @@ struct Grid {
     static constexpr i32 width = 7;
     static constexpr i32 height = 5;
 
-    static i32 index(IntVec v) {
+    static i32 index(IntVec v)
+    {
         if (v.x < 0 || v.x >= Grid::width) {
             return -1;
         }
@@ -34,7 +35,8 @@ struct Map {
     static constexpr char hole = 'O';
 };
 
-int main() {
+int main()
+{
     InitWindow(Grid::width * Grid::tileSize, Grid::height * Grid::tileSize,
                "Cocoban");
     SetTargetFPS(60);
