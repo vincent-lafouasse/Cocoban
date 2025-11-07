@@ -6,16 +6,15 @@
 #include "ints.hpp"
 
 struct IntVec {
-    int x;
-    int y;
+    i32 x;
+    i32 y;
 
     IntVec up() const { return {x, y - 1}; }
-
     IntVec down() const { return {x, y + 1}; }
-
     IntVec left() const { return {x - 1, y}; }
-
     IntVec right() const { return {x + 1, y}; }
+
+    IntVec scaleUp(i32 scale) const { return {scale * x, scale * y}; }
 };
 
 struct Board {
@@ -26,15 +25,14 @@ struct Board {
     static constexpr char hole = '.';
 
     std::vector<std::string> rows;
-    std::size_t width;
-    std::size_t height;
+    i32 width;
+    i32 height;
+    IntVec playerPosition;
 
     bool inBounds(IntVec pos) const
     {
-        const bool horizontal =
-            pos.x >= 0 && pos.x < static_cast<int>(this->width);
-        const bool vertical =
-            pos.y >= 0 && pos.y < static_cast<int>(this->height);
+        const bool horizontal = pos.x >= 0 && pos.x < this->width;
+        const bool vertical = pos.y >= 0 && pos.y < this->height;
         return horizontal && vertical;
     }
 
@@ -42,14 +40,15 @@ struct Board {
     {
         std::vector<std::string> rows = {
             "#####",
-            "#.$@#",
+            "#.$ #",
             "#####",
         };
+        IntVec player = {3, 1};
 
-        std::size_t width = rows[0].size();
-        std::size_t height = rows.size();
+        i32 width = rows[0].size();
+        i32 height = rows.size();
 
-        return {rows, width, height};
+        return {rows, width, height, player};
     }
 };
 
@@ -93,16 +92,23 @@ class Game {
    public:
     Game(const Board& board) : board(board) {}
 
+    void update(Direction action) {}
+
     void render() const
     {
-        for (std::size_t x = 0; x < board.width; ++x) {
-            for (std::size_t y = 0; y < board.height; ++y) {
+        for (i32 x = 0; x < board.width; ++x) {
+            for (i32 y = 0; y < board.height; ++y) {
                 Color color = Render::tileColor(board.rows[y][x]);
 
                 DrawRectangle(x * Render::tileSize, y * Render::tileSize,
                               Render::tileSize, Render::tileSize, color);
             }
         }
+
+        DrawRectangle(board.playerPosition.x * Render::tileSize,
+                      board.playerPosition.y * Render::tileSize,
+                      Render::tileSize, Render::tileSize,
+                      Render::tileColor(Board::player));
         DrawFPS(0, 0);
     }
 
