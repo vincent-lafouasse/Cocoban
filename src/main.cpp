@@ -84,13 +84,13 @@ class Game {
                 Render::fillTile(position, color);
             }
         }
-        Render::fillTile(this->player, Render::tileColor(Board::Player));
         for (IntVec hole : this->holes) {
             Render::fillTile(hole, Render::tileColor(Board::Hole));
         }
         for (IntVec token : this->tokens) {
             Render::fillTile(token, Render::tileColor(Board::Token));
         }
+        Render::fillTile(this->player, Render::tileColor(Board::Player));
     }
 
    private:
