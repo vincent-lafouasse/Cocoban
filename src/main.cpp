@@ -15,6 +15,11 @@ struct IntVec {
     IntVec right() const { return {x + 1, y}; }
 
     IntVec scaleUp(i32 scale) const { return {scale * x, scale * y}; }
+
+    IntVec operator+(const IntVec& other) const
+    {
+        return {x + other.x, y + other.y};
+    }
 };
 
 struct Board {
@@ -81,18 +86,50 @@ Color tileColor(char tile)
 }
 };  // namespace Render
 
-enum class Direction {
-    Up,
-    Down,
-    Left,
-    Right,
+struct Direction {
+    enum Self {
+        Up,
+        Down,
+        Left,
+        Right,
+    };
+
+    Direction(Self self) : self(self) {}
+
+    IntVec asVec() const
+    {
+        IntVec zero = {0, 0};
+
+        switch (self) {
+            case Up:
+                return zero.up();
+            case Down:
+                return zero.down();
+            case Left:
+                return zero.left();
+            case Right:
+                return zero.right();
+            default:
+                return zero;
+        }
+    }
+
+    Self self;
 };
 
 class Game {
    public:
     Game(const Board& board) : board(board) {}
 
-    void update(Direction action) {}
+    void update(Direction action)
+    {
+        IntVec movement = action.asVec();
+        IntVec newPosition = board.playerPosition + movement;
+
+        if (board.inBounds(newPosition)) {
+            board.playerPosition = newPosition;
+        }
+    }
 
     void render() const
     {
@@ -123,6 +160,15 @@ int main()
     Game game(board);
 
     while (!WindowShouldClose()) {
+        if (IsKeyDown(KEY_RIGHT))
+            game.update(Direction::Right);
+        if (IsKeyDown(KEY_LEFT))
+            game.update(Direction::Left);
+        if (IsKeyDown(KEY_UP))
+            game.update(Direction::Up);
+        if (IsKeyDown(KEY_DOWN))
+            game.update(Direction::Down);
+
         BeginDrawing();
         game.render();
         EndDrawing();
