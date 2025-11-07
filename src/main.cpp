@@ -41,15 +41,27 @@ void fillTile(IntVec position, Color color)
 
 class Game {
    public:
-    Game(const Board& board) : board(board) {}
+    Game(const Board& board) : board(board)
+    {
+        for (i32 x = 0; x < board.width(); ++x) {
+            for (i32 y = 0; y < board.height(); ++y) {
+                Board::Tile& tile = this->board.at({x, y});
+
+                if (tile == Board::Player) {
+                    this->player = {x, y};
+                    tile = Board::Empty;
+                }
+            }
+        }
+    }
 
     void update(Direction action)
     {
         IntVec movement = action.asVec();
-        IntVec newPosition = board.playerPosition + movement;
+        IntVec newPosition = this->player + movement;
 
         if (board.inBounds(newPosition)) {
-            board.playerPosition = newPosition;
+            this->player = newPosition;
         }
     }
 
@@ -63,13 +75,13 @@ class Game {
                 Render::fillTile(position, color);
             }
         }
-        Render::fillTile(board.playerPosition,
-                         Render::tileColor(Board::Player));
+        Render::fillTile(this->player, Render::tileColor(Board::Player));
         DrawFPS(0, 0);
     }
 
    private:
     Board board;
+    IntVec player;
 };
 
 int main()

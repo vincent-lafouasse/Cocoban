@@ -6,16 +6,14 @@
 #include "ints.hpp"
 
 struct Board {
-    enum Tile : u8 {
-        Wall = '#',
-        Empty = ' ',
-        Player = '@',
-        Token = '$',
-        Hole = '.',
-    };
+    using Tile = char;
+    static constexpr Tile Wall = '#';
+    static constexpr Tile Empty = ' ';
+    static constexpr Tile Player = '@';
+    static constexpr Tile Token = '$';
+    static constexpr Tile Hole = '.';
 
     std::vector<std::string> rows;
-    IntVec playerPosition;
 
     bool inBounds(IntVec pos) const
     {
@@ -26,8 +24,10 @@ struct Board {
 
     Tile at(IntVec position) const
     {
-        return static_cast<Tile>(this->rows[position.y][position.x]);
+        return this->rows[position.y][position.x];
     }
+
+    Tile& at(IntVec position) { return this->rows[position.y][position.x]; }
 
     i32 width() const { return rows[0].size(); }
 
@@ -37,11 +37,9 @@ struct Board {
     {
         std::vector<std::string> rows = {
             "#####",
-            "#.$ #",
+            "#.$@#",
             "#####",
         };
-        IntVec player = {3, 1};
-
-        return {rows, player};
+        return {rows};
     }
 };
