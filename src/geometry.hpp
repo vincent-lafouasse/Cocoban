@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "ints.hpp"
 
 struct IntVec {
@@ -20,20 +22,20 @@ struct IntVec {
 };
 
 struct Direction {
-    enum Self {
+    enum Inner {
         Up,
         Down,
         Left,
         Right,
     };
 
-    Direction(Self self) : self(self) {}
+    Direction(Inner inner) : inner(inner) {}
 
     IntVec asVec() const
     {
         IntVec zero = {0, 0};
 
-        switch (self) {
+        switch (inner) {
             case Up:
                 return zero.up();
             case Down:
@@ -47,5 +49,7 @@ struct Direction {
         }
     }
 
-    Self self;
+    static std::array<Direction, 4> all() { return {Up, Down, Left, Right}; }
+
+    Inner inner;
 };
