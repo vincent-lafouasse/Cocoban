@@ -1,11 +1,29 @@
+#include <vector>
+
 #include <raylib.h>
 
-#include "colors/ColorMap.hpp"
+#include "colors/Rgb.hpp"
 #include "ints.hpp"
 
 struct IntVec {
     int x;
     int y;
+
+    IntVec up() const {
+        return {x, y - 1};
+    }
+
+    IntVec down() const {
+        return {x, y + 1};
+    }
+
+    IntVec left() const {
+        return {x - 1, y};
+    }
+
+    IntVec right() const {
+        return {x + 1, y};
+    }
 };
 
 struct Map {
@@ -18,6 +36,13 @@ struct Map {
     std::vector<std::string> rows;
     std::size_t width;
     std::size_t height;
+
+    bool inBounds(IntVec pos) const
+    {
+        const bool horizontal = pos.x >= 0 && pos.x < static_cast<int>(this->width);
+        const bool vertical = pos.y >= 0 && pos.y < static_cast<int>(this->height);
+        return horizontal && vertical;
+    }
 
     static Map hardcoded()
     {
@@ -63,13 +88,18 @@ Color tileColor(char tile)
 }
 };  // namespace Render
 
-int main()
-{
-    Map map = Map::hardcoded();
-    Render::init(map);
+enum class Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+};
 
-    while (!WindowShouldClose()) {
-        BeginDrawing();
+class Game {
+public:
+    Game(const Map& map): map(map) {}
+
+    void render() const {
         for (std::size_t x = 0; x < map.width; ++x) {
             for (std::size_t y = 0; y < map.height; ++y) {
                 Color color = Render::tileColor(map.rows[y][x]);
@@ -79,6 +109,21 @@ int main()
             }
         }
         DrawFPS(0, 0);
+    }
+
+private:
+    Map map;
+};
+
+int main()
+{
+    Map map = Map::hardcoded();
+    Render::init(map);
+    Game game(map);
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        game.render();
         EndDrawing();
     }
 
