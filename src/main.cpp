@@ -41,7 +41,7 @@ void fillTile(IntVec position, Color color)
 
 class Game {
    public:
-    Game(const Board& board) : board(board)
+    Game(const Board& board) : board(board), player(), tokens(), holes()
     {
         for (i32 x = 0; x < board.width(); ++x) {
             for (i32 y = 0; y < board.height(); ++y) {
@@ -49,6 +49,12 @@ class Game {
 
                 if (tile == Board::Player) {
                     this->player = {x, y};
+                    tile = Board::Empty;
+                } else if (tile == Board::Token) {
+                    this->tokens.push_back({x, y});
+                    tile = Board::Empty;
+                } else if (tile == Board::Hole) {
+                    this->holes.push_back({x, y});
                     tile = Board::Empty;
                 }
             }
@@ -76,12 +82,19 @@ class Game {
             }
         }
         Render::fillTile(this->player, Render::tileColor(Board::Player));
-        DrawFPS(0, 0);
+        for (IntVec hole : this->holes) {
+            Render::fillTile(hole, Render::tileColor(Board::Hole));
+        }
+        for (IntVec token : this->tokens) {
+            Render::fillTile(token, Render::tileColor(Board::Token));
+        }
     }
 
    private:
     Board board;
     IntVec player;
+    std::vector<IntVec> tokens;
+    std::vector<IntVec> holes;
 };
 
 int main()
@@ -102,6 +115,7 @@ int main()
 
         BeginDrawing();
         game.render();
+        DrawFPS(0, 0);
         EndDrawing();
     }
 
