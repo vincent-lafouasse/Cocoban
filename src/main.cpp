@@ -9,22 +9,22 @@ static constexpr i32 tileSize = 64;
 
 void init(const Board& board)
 {
-    InitWindow(board.width * Render::tileSize, board.height * Render::tileSize,
-               "Cocoban");
+    InitWindow(board.width() * Render::tileSize,
+               board.height() * Render::tileSize, "Cocoban");
     SetTargetFPS(60);
 }
 
 Color tileColor(char tile)
 {
-    if (tile == Board::wall) {
+    if (tile == Board::Wall) {
         return catpuccin::DarkGray.opaque();
-    } else if (tile == Board::empty) {
+    } else if (tile == Board::Empty) {
         return catpuccin::Rosewater.opaque();
-    } else if (tile == Board::player) {
+    } else if (tile == Board::Player) {
         return catpuccin::Red.opaque();
-    } else if (tile == Board::token) {
+    } else if (tile == Board::Token) {
         return catpuccin::Blue.opaque();
-    } else if (tile == Board::hole) {
+    } else if (tile == Board::Hole) {
         return catpuccin::Lavender.opaque();
     } else {
         Rgb black = {0, 0, 0};
@@ -49,8 +49,8 @@ class Game {
 
     void render() const
     {
-        for (i32 x = 0; x < board.width; ++x) {
-            for (i32 y = 0; y < board.height; ++y) {
+        for (i32 x = 0; x < board.width(); ++x) {
+            for (i32 y = 0; y < board.height(); ++y) {
                 Color color = Render::tileColor(board.rows[y][x]);
 
                 DrawRectangle(x * Render::tileSize, y * Render::tileSize,
@@ -61,7 +61,7 @@ class Game {
         DrawRectangle(board.playerPosition.x * Render::tileSize,
                       board.playerPosition.y * Render::tileSize,
                       Render::tileSize, Render::tileSize,
-                      Render::tileColor(Board::player));
+                      Render::tileColor(Board::Player));
         DrawFPS(0, 0);
     }
 

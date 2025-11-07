@@ -6,23 +6,32 @@
 #include "ints.hpp"
 
 struct Board {
-    static constexpr char wall = '#';
-    static constexpr char empty = ' ';
-    static constexpr char player = '@';
-    static constexpr char token = '$';
-    static constexpr char hole = '.';
+    enum Tile : u8 {
+        Wall = '#',
+        Empty = ' ',
+        Player = '@',
+        Token = '$',
+        Hole = '.',
+    };
 
     std::vector<std::string> rows;
-    i32 width;
-    i32 height;
     IntVec playerPosition;
 
     bool inBounds(IntVec pos) const
     {
-        const bool horizontal = pos.x >= 0 && pos.x < this->width;
-        const bool vertical = pos.y >= 0 && pos.y < this->height;
+        const bool horizontal = pos.x >= 0 && pos.x < this->width();
+        const bool vertical = pos.y >= 0 && pos.y < this->height();
         return horizontal && vertical;
     }
+
+    Tile at(IntVec position) const
+    {
+        return static_cast<Tile>(this->rows[position.y][position.x]);
+    }
+
+    i32 width() const { return rows[0].size(); }
+
+    i32 height() const { return rows.size(); }
 
     static Board hardcoded()
     {
@@ -33,9 +42,6 @@ struct Board {
         };
         IntVec player = {3, 1};
 
-        i32 width = rows[0].size();
-        i32 height = rows.size();
-
-        return {rows, width, height, player};
+        return {rows, player};
     }
 };
