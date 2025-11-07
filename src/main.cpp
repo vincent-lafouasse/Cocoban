@@ -106,7 +106,9 @@ class Game {
 
 int main()
 {
-    Board board = Board::hardcoded();
+    Board board = Board::load("levels/l1.map");
+    board.log();
+
     Render::init(board);
     Game game(board);
 
