@@ -3,15 +3,6 @@
 #include "colors/ColorMap.hpp"
 #include "ints.hpp"
 
-namespace Render {
-static constexpr i32 tileSize = 64;
-static constexpr Rgb wallColor = catpuccin::DarkGray;
-static constexpr Rgb floorColor = catpuccin::Rosewater;
-static constexpr Rgb playerColor = catpuccin::Red;
-static constexpr Rgb tokenColor = catpuccin::Blue;
-static constexpr Rgb holeColor = catpuccin::Lavender;
-};  // namespace Render
-
 struct IntVec {
     int x;
     int y;
@@ -43,6 +34,28 @@ struct Map {
     }
 };
 
+namespace Render {
+static constexpr i32 tileSize = 64;
+
+Color tileColor(char tile)
+{
+    if (tile == Map::wall) {
+        return catpuccin::DarkGray.opaque();
+    } else if (tile == Map::empty) {
+        return catpuccin::Rosewater.opaque();
+    } else if (tile == Map::player) {
+        return catpuccin::Red.opaque();
+    } else if (tile == Map::token) {
+        return catpuccin::Blue.opaque();
+    } else if (tile == Map::hole) {
+        return catpuccin::Lavender.opaque();
+    } else {
+        Rgb black = {0, 0, 0};
+        return black.opaque();
+    }
+}
+};  // namespace Render
+
 int main()
 {
     Map map = Map::hardcoded();
@@ -57,11 +70,10 @@ int main()
         BeginDrawing();
         for (std::size_t x = 0; x < map.width; ++x) {
             for (std::size_t y = 0; y < map.height; ++y) {
-                Rgb color = Render::floorColor;
+                Color color = Render::tileColor(map.rows[y][x]);
 
                 DrawRectangle(x * Render::tileSize, y * Render::tileSize,
-                              Render::tileSize, Render::tileSize,
-                              color.opaque());
+                              Render::tileSize, Render::tileSize, color);
             }
         }
         DrawFPS(0, 0);
