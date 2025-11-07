@@ -9,21 +9,13 @@ struct IntVec {
     int x;
     int y;
 
-    IntVec up() const {
-        return {x, y - 1};
-    }
+    IntVec up() const { return {x, y - 1}; }
 
-    IntVec down() const {
-        return {x, y + 1};
-    }
+    IntVec down() const { return {x, y + 1}; }
 
-    IntVec left() const {
-        return {x - 1, y};
-    }
+    IntVec left() const { return {x - 1, y}; }
 
-    IntVec right() const {
-        return {x + 1, y};
-    }
+    IntVec right() const { return {x + 1, y}; }
 };
 
 struct Board {
@@ -39,8 +31,10 @@ struct Board {
 
     bool inBounds(IntVec pos) const
     {
-        const bool horizontal = pos.x >= 0 && pos.x < static_cast<int>(this->width);
-        const bool vertical = pos.y >= 0 && pos.y < static_cast<int>(this->height);
+        const bool horizontal =
+            pos.x >= 0 && pos.x < static_cast<int>(this->width);
+        const bool vertical =
+            pos.y >= 0 && pos.y < static_cast<int>(this->height);
         return horizontal && vertical;
     }
 
@@ -96,10 +90,11 @@ enum class Direction {
 };
 
 class Game {
-public:
-    Game(const Board& board): board(board) {}
+   public:
+    Game(const Board& board) : board(board) {}
 
-    void render() const {
+    void render() const
+    {
         for (std::size_t x = 0; x < board.width; ++x) {
             for (std::size_t y = 0; y < board.height; ++y) {
                 Color color = Render::tileColor(board.rows[y][x]);
@@ -111,7 +106,7 @@ public:
         DrawFPS(0, 0);
     }
 
-private:
+   private:
     Board board;
 };
 
