@@ -1,10 +1,17 @@
 #pragma once
 
+#include <array>
+
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <raylib.h>
 
 #include "Board.hpp"
 #include "Game.hpp"
 #include "colors/Rgb.hpp"
+
+static constexpr float degToRad = M_PI / 180.0f;
 
 struct Renderer {
     static constexpr i32 tileSize = 64;
@@ -62,6 +69,27 @@ struct Renderer {
     {
         const Color color = catpuccin::Lavender.opaque();
         Renderer::fillTile(position, color);
+
+        const float lineWidth = 5.0f;
+        const float lineLength = static_cast<float>(Renderer::tileSize) / 2;
+
+        const IntVec centerInt =
+            position + IntVec{Renderer::tileSize / 2, Renderer::tileSize / 2};
+        const Vector2 center = {
+            static_cast<float>(centerInt.x),
+            static_cast<float>(centerInt.y),
+        };
+
+        const std::array<float, 4> angles = {45.0f, 135.0f, 225.0f, 315.0f};
+
+        for (float angle : angles) {
+            const float rad = angle * degToRad;
+            const Vector2 end = {center.x + std::cosf(rad) * lineLength,
+                                 center.y + sinf(rad) * lineLength};
+            const Color color = catpuccin::Mauve.opaque();
+
+            DrawLineEx(center, end, lineWidth, color);
+        }
     }
 
     static void renderBox(IntVec position)
