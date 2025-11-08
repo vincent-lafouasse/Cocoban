@@ -85,7 +85,7 @@ struct Renderer {
         for (float angle : angles) {
             const float rad = angle * degToRad;
             const Vector2 end = {center.x + std::cosf(rad) * lineLength,
-                                 center.y + sinf(rad) * lineLength};
+                                 center.y + std::sinf(rad) * lineLength};
             const Color color = catpuccin::Mauve.opaque();
 
             DrawLineEx(center, end, lineWidth, color);
