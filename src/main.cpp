@@ -98,6 +98,12 @@ class Game {
     }
 
    private:
+    bool hasBoxAt(IntVec position) const
+    {
+        return std::find(boxes.cbegin(), boxes.cend(), position) !=
+               boxes.cend();
+    }
+
     bool hasHoleAt(IntVec position) const
     {
         return std::find(holes.cbegin(), holes.cend(), position) !=
