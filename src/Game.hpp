@@ -43,6 +43,37 @@ class Game {
         if (board.inBounds(newPosition)) {
             this->player = newPosition;
         }
+
+        this->log();
+    }
+
+    void log() const
+    {
+        this->board.log();
+
+        auto logPosition = [](const IntVec pos) {
+            std::cerr << "{ " << pos.x << ", " << pos.y << " }";
+        };
+
+        std::cerr << "Player:\n\t";
+        logPosition(this->player);
+        std::cerr << '\n';
+
+        std::cerr << "Boxes:\n";
+        for (IntVec box : this->boxes) {
+            std::cerr << '\t';
+            logPosition(box);
+            std::cerr << '\n';
+        }
+        std::cerr << '\n';
+
+        std::cerr << "Holes:\n";
+        for (IntVec hole : this->holes) {
+            std::cerr << '\t';
+            logPosition(hole);
+            std::cerr << '\n';
+        }
+        std::cerr << '\n';
     }
 
    private:
