@@ -1,4 +1,4 @@
-#include <array>
+#include <algorithm>
 #include <unordered_set>
 
 #include <raylib.h>
@@ -25,7 +25,7 @@ Color tileColor(Board::Tile tile)
         return catpuccin::Rosewater.opaque();
     } else if (tile == Board::Player) {
         return catpuccin::Red.opaque();
-    } else if (tile == Board::Token) {
+    } else if (tile == Board::Box) {
         return catpuccin::Blue.opaque();
     } else if (tile == Board::Hole) {
         return catpuccin::Lavender.opaque();
@@ -44,7 +44,7 @@ void fillTile(IntVec position, Color color)
 
 class Game {
    public:
-    Game(const Board& board) : board(board), player(), tokens(), holes()
+    Game(const Board& board) : board(board), player(), boxes(), holes()
     {
         for (i32 x = 0; x < board.width(); ++x) {
             for (i32 y = 0; y < board.height(); ++y) {
@@ -53,8 +53,8 @@ class Game {
                 if (tile == Board::Player) {
                     this->player = {x, y};
                     tile = Board::Empty;
-                } else if (tile == Board::Token) {
-                    this->tokens.push_back({x, y});
+                } else if (tile == Board::Box) {
+                    this->boxes.push_back({x, y});
                     tile = Board::Empty;
                 } else if (tile == Board::Hole) {
                     this->holes.push_back({x, y});
@@ -91,16 +91,22 @@ class Game {
         for (IntVec hole : this->holes) {
             Render::fillTile(hole, Render::tileColor(Board::Hole));
         }
-        for (IntVec token : this->tokens) {
-            Render::fillTile(token, Render::tileColor(Board::Token));
+        for (IntVec box : this->boxes) {
+            Render::fillTile(box, Render::tileColor(Board::Box));
         }
         Render::fillTile(this->player, Render::tileColor(Board::Player));
     }
 
    private:
+    bool hasHoleAt(IntVec position) const
+    {
+        return std::find(holes.cbegin(), holes.cend(), position) !=
+               holes.cend();
+    }
+
     Board board;
     IntVec player;
-    std::vector<IntVec> tokens;
+    std::vector<IntVec> boxes;
     std::vector<IntVec> holes;
 };
 

@@ -19,6 +19,13 @@ struct IntVec {
     {
         return {x + other.x, y + other.y};
     }
+
+    bool operator==(const IntVec& other) const
+    {
+        return x == other.x && y == other.y;
+    }
+
+    bool operator!=(const IntVec& other) const { return !(*this == other); }
 };
 
 struct Direction {

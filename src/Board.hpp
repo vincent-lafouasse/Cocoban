@@ -12,7 +12,7 @@ struct Board {
     static constexpr Tile Wall = '#';
     static constexpr Tile Empty = ' ';
     static constexpr Tile Player = '@';
-    static constexpr Tile Token = '$';
+    static constexpr Tile Box = '$';
     static constexpr Tile Hole = '.';
 
     std::vector<std::string> data;
