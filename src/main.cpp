@@ -121,8 +121,8 @@ int main()
     Board board = Board::load("levels/l2.map");
     board.log();
 
-    Render::init(board);
     Game game(board);
+    Render::init(board);
 
     using RaylibKey = int;
     std::unordered_set<RaylibKey> keyDowns;
