@@ -95,14 +95,29 @@ struct Renderer {
     static void renderHole(IntVec position)
     {
         const Color color = catpuccin::Lavender.opaque();
-        Renderer::fillTile(position, color);
-        Renderer::drawCross(position, catpuccin::Mauve.opaque());
+        // Renderer::fillTile(position, color);
+        Renderer::drawCross(position, color);
     }
 
     static void renderBox(IntVec position)
     {
         const Color color = catpuccin::Blue.opaque();
+        const Color innerColor = catpuccin::Sky.opaque();
+
         Renderer::fillTile(position, color);
+
+        const float innerScale = 0.66f;
+        const float innerSize =
+            static_cast<float>(Renderer::tileSize) * innerScale;
+
+        const float offset =
+            static_cast<float>(Renderer::tileSize) * (1.0f - innerScale) / 2.0f;
+        const Vector2 corner = {
+            static_cast<float>(position.x * Renderer::tileSize) + offset,
+            static_cast<float>(position.y * Renderer::tileSize) + offset,
+        };
+
+        DrawRectangle(corner.x, corner.y, innerSize, innerSize, innerColor);
     }
 
     static void renderPlayer(IntVec position)
