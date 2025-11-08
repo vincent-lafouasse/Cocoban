@@ -11,8 +11,11 @@ struct Renderer {
 
     Renderer(const Board& board)
     {
-        InitWindow(board.width() * Renderer::tileSize,
-                   board.height() * Renderer::tileSize, "Cocoban");
+        const int screenWidth = board.width() * Renderer::tileSize;
+        const int screenHeight = board.height() * Renderer::tileSize;
+        static const char* title = "Cocoban";
+
+        InitWindow(screenWidth, screenHeight, title);
         SetTargetFPS(60);
     }
 
