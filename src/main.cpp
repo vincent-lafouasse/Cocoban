@@ -7,43 +7,13 @@
 #include "colors/Rgb.hpp"
 #include "ints.hpp"
 
-namespace Render {
-static constexpr i32 tileSize = 64;
-
-void init(const Board& board)
-{
-    InitWindow(board.width() * Render::tileSize,
-               board.height() * Render::tileSize, "Cocoban");
-    SetTargetFPS(60);
-}
-
-Color tileColor(Board::Tile tile)
-{
-    if (tile == Board::Wall) {
-        return catpuccin::DarkGray.opaque();
-    } else if (tile == Board::Empty) {
-        return catpuccin::Rosewater.opaque();
-    } else if (tile == Board::Player) {
-        return catpuccin::Red.opaque();
-    } else if (tile == Board::Box) {
-        return catpuccin::Blue.opaque();
-    } else if (tile == Board::Hole) {
-        return catpuccin::Lavender.opaque();
-    } else {
-        Rgb black = {0, 0, 0};
-        return black.opaque();
-    }
-}
-
-void fillTile(IntVec position, Color color)
-{
-    DrawRectangle(position.x * Render::tileSize, position.y * Render::tileSize,
-                  Render::tileSize, Render::tileSize, color);
-}
-};  // namespace Render
-
 class Game {
    public:
+    Board board;
+    IntVec player;
+    std::vector<IntVec> boxes;
+    std::vector<IntVec> holes;
+
     Game(const Board& board) : board(board), player(), boxes(), holes()
     {
         for (i32 x = 0; x < board.width(); ++x) {
@@ -78,25 +48,6 @@ class Game {
         }
     }
 
-    void render() const
-    {
-        for (i32 x = 0; x < board.width(); ++x) {
-            for (i32 y = 0; y < board.height(); ++y) {
-                IntVec position = {x, y};
-                Color color = Render::tileColor(board.at(position));
-
-                Render::fillTile(position, color);
-            }
-        }
-        for (IntVec hole : this->holes) {
-            Render::fillTile(hole, Render::tileColor(Board::Hole));
-        }
-        for (IntVec box : this->boxes) {
-            Render::fillTile(box, Render::tileColor(Board::Box));
-        }
-        Render::fillTile(this->player, Render::tileColor(Board::Player));
-    }
-
    private:
     bool hasBoxAt(IntVec position) const
     {
@@ -109,11 +60,86 @@ class Game {
         return std::find(holes.cbegin(), holes.cend(), position) !=
                holes.cend();
     }
+};
 
-    Board board;
-    IntVec player;
-    std::vector<IntVec> boxes;
-    std::vector<IntVec> holes;
+struct Renderer {
+    static constexpr i32 tileSize = 64;
+
+    Renderer(const Board& board)
+    {
+        InitWindow(board.width() * Renderer::tileSize,
+                   board.height() * Renderer::tileSize, "Cocoban");
+        SetTargetFPS(60);
+    }
+
+    ~Renderer() { CloseWindow(); }
+
+    void render(const Game& game) const
+    {
+        for (i32 x = 0; x < game.board.width(); ++x) {
+            for (i32 y = 0; y < game.board.height(); ++y) {
+                switch (game.board.at({x, y})) {
+                    case Board::Wall:
+                        Renderer::renderWall({x, y});
+                        break;
+                    case Board::Empty:
+                        Renderer::renderFloor({x, y});
+                        break;
+                    default:
+                        std::cerr << "Unexpected tile "
+                                  << game.board.at({x, y});
+                        std::cerr << " at position " << x << " " << y
+                                  << std::endl;
+                        game.board.log();
+                        std::exit(1);
+                }
+            }
+        }
+        for (IntVec hole : game.holes) {
+            Renderer::renderHole(hole);
+        }
+        for (IntVec box : game.boxes) {
+            Renderer::renderBox(box);
+        }
+        Renderer::renderPlayer(game.player);
+    }
+
+    static void fillTile(IntVec position, Color color)
+    {
+        DrawRectangle(position.x * Renderer::tileSize,
+                      position.y * Renderer::tileSize, Renderer::tileSize,
+                      Renderer::tileSize, color);
+    }
+
+    static void renderHole(IntVec position)
+    {
+        const Color color = catpuccin::Lavender.opaque();
+        Renderer::fillTile(position, color);
+    }
+
+    static void renderBox(IntVec position)
+    {
+        const Color color = catpuccin::Blue.opaque();
+        Renderer::fillTile(position, color);
+    }
+
+    static void renderPlayer(IntVec position)
+    {
+        const Color color = catpuccin::Red.opaque();
+        Renderer::fillTile(position, color);
+    }
+
+    static void renderFloor(IntVec position)
+    {
+        const Color color = catpuccin::Rosewater.opaque();
+        Renderer::fillTile(position, color);
+    }
+
+    static void renderWall(IntVec position)
+    {
+        const Color color = catpuccin::DarkGray.opaque();
+        Renderer::fillTile(position, color);
+    }
 };
 
 int main()
@@ -122,7 +148,7 @@ int main()
     board.log();
 
     Game game(board);
-    Render::init(board);
+    Renderer renderer(board);
 
     using RaylibKey = int;
     std::unordered_set<RaylibKey> keyDowns;
@@ -153,7 +179,7 @@ int main()
         }
 
         BeginDrawing();
-        game.render();
+        renderer.render(game);
         DrawFPS(0, 0);
         EndDrawing();
     }
