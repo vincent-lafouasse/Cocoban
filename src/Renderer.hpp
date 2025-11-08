@@ -67,7 +67,7 @@ struct Renderer {
 
     static void drawCross(IntVec position, Color color)
     {
-        const float lineWidth = 5.0f;
+        const float lineWidth = static_cast<float>(Renderer::tileSize) * 0.1f;
         const float lineLength = static_cast<float>(Renderer::tileSize) / 2;
 
         const IntVec centerInt =
