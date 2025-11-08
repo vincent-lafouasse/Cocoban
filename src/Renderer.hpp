@@ -65,16 +65,17 @@ struct Renderer {
                       Renderer::tileSize, color);
     }
 
-    static void renderHole(IntVec position)
+    static void drawCross(IntVec position, Color color)
     {
-        const Color color = catpuccin::Lavender.opaque();
-        Renderer::fillTile(position, color);
-
         const float lineWidth = 5.0f;
         const float lineLength = static_cast<float>(Renderer::tileSize) / 2;
 
         const IntVec centerInt =
-            position + IntVec{Renderer::tileSize / 2, Renderer::tileSize / 2};
+            IntVec{
+                position.x * Renderer::tileSize,
+                position.y * Renderer::tileSize,
+            } +
+            IntVec{Renderer::tileSize / 2, Renderer::tileSize / 2};
         const Vector2 center = {
             static_cast<float>(centerInt.x),
             static_cast<float>(centerInt.y),
@@ -86,10 +87,16 @@ struct Renderer {
             const float rad = angle * degToRad;
             const Vector2 end = {center.x + std::cosf(rad) * lineLength,
                                  center.y + std::sinf(rad) * lineLength};
-            const Color color = catpuccin::Mauve.opaque();
 
             DrawLineEx(center, end, lineWidth, color);
         }
+    }
+
+    static void renderHole(IntVec position)
+    {
+        const Color color = catpuccin::Lavender.opaque();
+        Renderer::fillTile(position, color);
+        Renderer::drawCross(position, catpuccin::Mauve.opaque());
     }
 
     static void renderBox(IntVec position)
