@@ -10,7 +10,7 @@ class Game {
         std::vector<IntVec> boxes;
     } state;
 
-    Game(const Board& board);
+    explicit Game(const Board& board);
     void update(Direction action);
     void log() const;
 
