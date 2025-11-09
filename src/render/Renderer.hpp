@@ -12,7 +12,7 @@ class Renderer {
     explicit Renderer(const Board& board);
     ~Renderer();
 
-    void render(const Game& game) const;
+    static void render(const Game& game);
 
    private:
     static void renderHole(IntVec position);

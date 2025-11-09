@@ -47,7 +47,7 @@ int main()
         }
 
         BeginDrawing();
-        renderer.render(game);
+        Renderer::render(game);
         DrawFPS(0, 0);
         EndDrawing();
     }
