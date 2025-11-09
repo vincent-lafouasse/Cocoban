@@ -34,7 +34,7 @@ std::vector<IntVec> bfs(const std::vector<std::string> board, IntVec start)
     return {};
 }
 
-void unionInPlace(std::vector<IntVec>& a, const std::vector<IntVec>& b)
+void intersectInPlace(std::vector<IntVec>& a, const std::vector<IntVec>& b)
 {
     auto newEnd = std::remove_if(
         a.begin(), a.end(), [&](IntVec e) { return !vectorContains(b, e); });
@@ -68,8 +68,10 @@ void Game::computeInaccessible()
             inaccessible.push_back(std::move(blob));
         }
 
-        unionInPlace(candidates, blob);
+        intersectInPlace(candidates, blob);
     }
+
+    // do stuff with [in]accessible
 }
 
 void Game::update(Direction action)
