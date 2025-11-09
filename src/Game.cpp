@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
 #include <iostream>
+#include <numeric>
 
 Game::Game(const Board& board) : board(board), state()
 {
