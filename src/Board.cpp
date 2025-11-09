@@ -1,5 +1,8 @@
 #include "Board.hpp"
 
+#include <fstream>
+#include <iostream>
+
 Board Board::load(const std::string& path)
 {
     std::ifstream input(path);
