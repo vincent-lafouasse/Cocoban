@@ -14,6 +14,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: install deps
+      run: sudo apt-get install xorg openbox
+
     - name: construct build system
       run: cmake -B build
       
