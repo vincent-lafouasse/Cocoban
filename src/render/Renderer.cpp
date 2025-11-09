@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 
 #include <array>
+#include <cmath>
 #include <iostream>
 
 #include "Rgb.hpp"
