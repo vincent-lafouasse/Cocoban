@@ -8,12 +8,12 @@ struct IntVec {
     i32 x;
     i32 y;
 
-    IntVec up() const;
-    IntVec down() const;
-    IntVec left() const;
-    IntVec right() const;
+    [[nodiscard]] IntVec up() const;
+    [[nodiscard]] IntVec down() const;
+    [[nodiscard]] IntVec left() const;
+    [[nodiscard]] IntVec right() const;
 
-    IntVec scaleUp(i32 scale) const;
+    [[nodiscard]] IntVec scaleUp(i32 scale) const;
 
     IntVec operator+(const IntVec& other) const;
     bool operator==(const IntVec& other) const;
@@ -30,6 +30,6 @@ struct Direction {
 
     Direction(Inner inner);
 
-    IntVec asVec() const;
+    [[nodiscard]] IntVec asVec() const;
     static std::array<Direction, 4> all();
 };
