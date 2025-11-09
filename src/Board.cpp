@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <numeric>
 
 Board Board::load(const std::string& path)
 {
@@ -14,6 +15,15 @@ Board Board::load(const std::string& path)
 
     for (std::string line; std::getline(input, line);) {
         data.push_back(line);
+    }
+
+    u32 maxLen = std::transform_reduce(
+        data.cbegin(), data.cend(), static_cast<u32>(0),
+        [](u32 acc, u32 e) { return std::max(acc, e); },
+        [](const std::string& line) { return line.size(); });
+
+    for (std::string& line : data) {
+        line += std::string(maxLen - line.size(), ' ');
     }
 
     return {data};
