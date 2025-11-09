@@ -20,7 +20,6 @@ int main(int ac, char* av[])
     const char* levelPath = av[1];
 
     const Board board = Board::load(levelPath);
-    board.log();
 
     Game game(board);
     const Game::State resetState = game.state;

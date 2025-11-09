@@ -32,14 +32,13 @@ bool vectorContains(const std::vector<IntVec>& v, IntVec e)
 
 std::vector<IntVec> bfs(const Board& board, IntVec start)
 {
-    std::vector<IntVec> explored;
+    std::vector<IntVec> explored = {start};
     std::queue<IntVec> queue;
     queue.push(start);
 
     while (!queue.empty()) {
         IntVec e = queue.back();
         queue.pop();
-        explored.push_back(e);
 
         for (Direction d : Direction::all()) {
             IntVec candidate = e + d.asVec();
@@ -52,6 +51,7 @@ std::vector<IntVec> bfs(const Board& board, IntVec start)
             }
 
             queue.push(candidate);
+            explored.push_back(candidate);
         }
     }
 
@@ -86,7 +86,8 @@ void Game::computeInaccessible()
         std::vector<IntVec> blob = bfs(board, randomElement);
 
         if (!vectorContains(blob, state.player)) {
-            outside.insert(outside.cend(), blob.cbegin(), blob.cend());
+            for (IntVec pos : blob)
+                outside.push_back(pos);
         }
 
         subtractInPlace(candidates, blob);
