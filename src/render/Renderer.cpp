@@ -103,6 +103,7 @@ void Renderer::renderBox(IntVec position)
 
     const float innerScale = 0.66f;
     const float innerSize = static_cast<float>(Renderer::tileSize) * innerScale;
+    const Vector2 sz = {innerSize, innerSize};
 
     const float offset =
         static_cast<float>(Renderer::tileSize) * (1.0f - innerScale) / 2.0f;
@@ -111,7 +112,7 @@ void Renderer::renderBox(IntVec position)
         static_cast<float>(position.y * Renderer::tileSize) + offset,
     };
 
-    DrawRectangle(corner.x, corner.y, innerSize, innerSize, innerColor);
+    DrawRectangleV(corner, sz, innerColor);
 }
 
 void Renderer::renderPlayer(IntVec position)
