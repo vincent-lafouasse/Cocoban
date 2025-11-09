@@ -15,5 +15,5 @@ class Game {
     void log() const;
 
    private:
-    bool hasBoxAt(IntVec position) const;
+    [[nodiscard]] bool hasBoxAt(IntVec position) const;
 };
