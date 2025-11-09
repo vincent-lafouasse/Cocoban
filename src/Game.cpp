@@ -20,7 +20,7 @@ Game::Game(const Board& board) : board(board), state()
         }
     }
 
-    this->computeInaccessible();
+    //this->computeInaccessible();
     board.log();
 }
 
