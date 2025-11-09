@@ -15,30 +15,33 @@ int main()
     Renderer renderer(board);
 
     using RaylibKey = int;
-    std::unordered_set<RaylibKey> keyDowns;
-
-    auto keys = [](Direction direction) {
-        switch (direction.inner) {
-            case Direction::Up:
-                return KEY_UP;
-            case Direction::Down:
-                return KEY_DOWN;
-            case Direction::Left:
-                return KEY_LEFT;
-            case Direction::Right:
-                return KEY_RIGHT;
-        }
+    std::array<std::pair<RaylibKey, bool>, 4> keydowns = {
+        std::make_pair(KEY_UP, false),
+        std::make_pair(KEY_DOWN, false),
+        std::make_pair(KEY_LEFT, false),
+        std::make_pair(KEY_RIGHT, false),
     };
 
     while (!WindowShouldClose()) {
-        for (const Direction& direction : Direction::all()) {
-            int key = keys(direction);
-
-            if (!keyDowns.contains(key) && IsKeyDown(key)) {
-                keyDowns.insert(key);
-                game.update(direction);
-            } else if (keyDowns.contains(key) && IsKeyUp(key)) {
-                keyDowns.erase(key);
+        for (auto& [key, isDown] : keydowns) {
+            if (!isDown && IsKeyDown(key)) {
+                isDown = true;
+                switch (key) {
+                    case KEY_UP:
+                        game.update(Direction::Up);
+                        break;
+                    case KEY_DOWN:
+                        game.update(Direction::Down);
+                        break;
+                    case KEY_LEFT:
+                        game.update(Direction::Left);
+                        break;
+                    case KEY_RIGHT:
+                        game.update(Direction::Right);
+                        break;
+                }
+            } else if (isDown && IsKeyUp(key)) {
+                isDown = false;
             }
         }
 
