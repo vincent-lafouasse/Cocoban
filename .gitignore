@@ -2,3 +2,4 @@
 local_*
 build
 .cache
+.idea
