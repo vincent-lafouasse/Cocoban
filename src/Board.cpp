@@ -11,7 +11,8 @@ Board Board::load(const std::string& path)
         std::cout << "Failed to open file " << path << std::endl;
     }
 
-    std::vector<std::string> data;
+    // TEMP: add blank line at the top for printing
+    std::vector<std::string> data = {""};
 
     for (std::string line; std::getline(input, line);) {
         data.push_back(line);
