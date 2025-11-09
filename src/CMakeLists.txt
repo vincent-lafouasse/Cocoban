@@ -5,8 +5,9 @@ PRIVATE
         main.cpp
 	Board.cpp
 	Game.cpp
-	Renderer.cpp
 	geometry.cpp
+
+	render/Renderer.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ./)
