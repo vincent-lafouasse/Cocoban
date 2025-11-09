@@ -18,12 +18,12 @@ struct Board {
 
     static Board load(const std::string& path);
 
-    Tile at(IntVec position) const;
+    [[nodiscard]] Tile at(IntVec position) const;
     Tile& at(IntVec position);
 
-    i32 width() const;
-    i32 height() const;
-    bool inBounds(IntVec pos) const;
+    [[nodiscard]] i32 width() const;
+    [[nodiscard]] i32 height() const;
+    [[nodiscard]] bool inBounds(IntVec pos) const;
 
     void log() const;
 };
