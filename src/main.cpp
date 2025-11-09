@@ -1,4 +1,5 @@
 #include <array>
+#include <iostream>
 
 #include <raylib.h>
 
@@ -6,9 +7,18 @@
 #include "Game.hpp"
 #include "render/Renderer.hpp"
 
-int main()
+int main(int ac, char* av[])
 {
-    const Board board = Board::load("levels/l2.map");
+    if (ac != 2) {
+        std::cerr << "Usage: " << av[0] << " ";
+        std::cerr << "level.map" << '\n';
+        std::cerr << "\nYou may find maps in levels/";
+        std::cerr << std::endl;
+        std::exit(1);
+    }
+    const char* levelPath = av[1];
+
+    const Board board = Board::load(levelPath);
     board.log();
 
     Game game(board);
