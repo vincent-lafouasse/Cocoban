@@ -55,23 +55,22 @@ void Game::computeInaccessible()
         }
     }
 
-    std::vector<std::vector<IntVec>> accessible;
-    std::vector<std::vector<IntVec>> inaccessible;
+    std::vector<IntVec> outside;
 
     while (!candidates.empty()) {
         IntVec randomElement = *candidates.cbegin();
         std::vector<IntVec> blob = bfs(board.data, randomElement);
 
-        if (vectorContains(blob, state.player)) {
-            accessible.push_back(std::move(blob));
-        } else {
-            inaccessible.push_back(std::move(blob));
+        if (!vectorContains(blob, state.player)) {
+            outside.insert(outside.cend(), blob.cbegin(), blob.cend());
         }
 
         intersectInPlace(candidates, blob);
     }
 
-    // do stuff with [in]accessible
+    for (IntVec pos : outside) {
+        board.at(pos) = Board::Outside;
+    }
 }
 
 void Game::update(Direction action)
