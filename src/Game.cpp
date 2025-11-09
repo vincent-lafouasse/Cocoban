@@ -18,6 +18,58 @@ Game::Game(const Board& board) : board(board), state()
             }
         }
     }
+    // this->computeInaccessible();
+}
+
+namespace {
+bool vectorContains(const std::vector<IntVec>& v, IntVec e)
+{
+    return std::ranges::find(v, e) != v.cend();
+}
+
+std::vector<IntVec> bfs(const std::vector<std::string> board, IntVec start)
+{
+    (void)board;
+    (void)start;
+    return {};
+}
+
+void unionInPlace(std::vector<IntVec>& a, const std::vector<IntVec>& b)
+{
+    auto newEnd = std::remove_if(
+        a.begin(), a.end(), [&](IntVec e) { return !vectorContains(b, e); });
+
+    a.erase(newEnd, a.end());
+}
+}  // namespace
+
+void Game::computeInaccessible()
+{
+    std::vector<IntVec> candidates;
+
+    for (i32 x = 0; x < board.width(); x++) {
+        for (i32 y = 0; y < board.height(); y++) {
+            if (board.at({x, y}) != Board::Wall) {
+                candidates.push_back({x, y});
+            }
+        }
+    }
+
+    std::vector<std::vector<IntVec>> accessible;
+    std::vector<std::vector<IntVec>> inaccessible;
+
+    while (!candidates.empty()) {
+        IntVec randomElement = *candidates.cbegin();
+        std::vector<IntVec> blob = bfs(board.data, randomElement);
+
+        if (vectorContains(blob, state.player)) {
+            accessible.push_back(std::move(blob));
+        } else {
+            inaccessible.push_back(std::move(blob));
+        }
+
+        unionInPlace(candidates, blob);
+    }
 }
 
 void Game::update(Direction action)

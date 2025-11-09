@@ -19,4 +19,5 @@ class Game {
 
    private:
     [[nodiscard]] bool hasBoxAt(IntVec position) const;
+    void computeInaccessible();
 };
