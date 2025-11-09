@@ -22,7 +22,7 @@ Renderer::~Renderer()
     CloseWindow();
 }
 
-void Renderer::render(const Game& game) const
+void Renderer::render(const Game& game)
 {
     for (i32 x = 0; x < game.board.width(); ++x) {
         for (i32 y = 0; y < game.board.height(); ++y) {
@@ -59,8 +59,8 @@ void Renderer::fillTile(IntVec position, Color color)
 
 void Renderer::drawCross(IntVec position, Color color)
 {
-    const float lineWidth = static_cast<float>(Renderer::tileSize) * 0.1f;
-    const float lineLength = static_cast<float>(Renderer::tileSize) / 2;
+    constexpr float lineWidth = static_cast<float>(Renderer::tileSize) * 0.1f;
+    constexpr float lineLength = static_cast<float>(Renderer::tileSize) / 2;
 
     const IntVec centerInt =
         IntVec{
@@ -73,7 +73,7 @@ void Renderer::drawCross(IntVec position, Color color)
         static_cast<float>(centerInt.y),
     };
 
-    const std::array<float, 4> angles = {45.0f, 135.0f, 225.0f, 315.0f};
+    constexpr std::array<float, 4> angles = {45.0f, 135.0f, 225.0f, 315.0f};
 
     for (float angle : angles) {
         const float rad = angle * degToRad;
@@ -104,7 +104,7 @@ void Renderer::renderBox(IntVec position)
         static_cast<float>(Renderer::tileSize) * innerScale;
     constexpr Vector2 sz = {innerSize, innerSize};
 
-    const float offset =
+    constexpr float offset =
         static_cast<float>(Renderer::tileSize) * (1.0f - innerScale) / 2.0f;
     const Vector2 corner = {
         static_cast<float>(position.x * Renderer::tileSize) + offset,
