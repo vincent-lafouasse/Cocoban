@@ -39,6 +39,9 @@ struct Renderer {
                     case Board::Empty:
                         Renderer::renderFloor({x, y});
                         break;
+                    case Board::Hole:
+                        Renderer::renderHole({x, y});
+                        break;
                     default:
                         std::cerr << "Unexpected tile "
                                   << game.board.at({x, y});
@@ -49,13 +52,10 @@ struct Renderer {
                 }
             }
         }
-        for (IntVec hole : game.holes) {
-            Renderer::renderHole(hole);
-        }
-        for (IntVec box : game.boxes) {
+        for (IntVec box : game.state.boxes) {
             Renderer::renderBox(box);
         }
-        Renderer::renderPlayer(game.player);
+        Renderer::renderPlayer(game.state.player);
     }
 
     static void fillTile(IntVec position, Color color)
@@ -94,6 +94,7 @@ struct Renderer {
 
     static void renderHole(IntVec position)
     {
+        Renderer::renderFloor(position);
         const Color color = catpuccin::Lavender.opaque();
         // Renderer::fillTile(position, color);
         Renderer::drawCross(position, color);

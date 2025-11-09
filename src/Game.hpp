@@ -7,24 +7,22 @@
 class Game {
    public:
     Board board;
-    IntVec player;
-    std::vector<IntVec> boxes;
-    std::vector<IntVec> holes;
+    struct State {
+        IntVec player;
+        std::vector<IntVec> boxes;
+    } state;
 
-    Game(const Board& board) : board(board), player(), boxes(), holes()
+    Game(const Board& board) : board(board), state()
     {
         for (i32 x = 0; x < board.width(); ++x) {
             for (i32 y = 0; y < board.height(); ++y) {
                 Board::Tile& tile = this->board.at({x, y});
 
                 if (tile == Board::Player) {
-                    this->player = {x, y};
+                    this->state.player = {x, y};
                     tile = Board::Empty;
                 } else if (tile == Board::Box) {
-                    this->boxes.push_back({x, y});
-                    tile = Board::Empty;
-                } else if (tile == Board::Hole) {
-                    this->holes.push_back({x, y});
+                    this->state.boxes.push_back({x, y});
                     tile = Board::Empty;
                 }
             }
@@ -34,14 +32,14 @@ class Game {
     void update(Direction action)
     {
         IntVec movement = action.asVec();
-        IntVec newPosition = this->player + movement;
+        IntVec newPosition = this->state.player + movement;
 
         if (board.at(newPosition) == Board::Wall) {
             return;
         }
 
         if (board.inBounds(newPosition)) {
-            this->player = newPosition;
+            this->state.player = newPosition;
         }
 
         this->log();
@@ -56,21 +54,13 @@ class Game {
         };
 
         std::cerr << "Player:\n\t";
-        logPosition(this->player);
+        logPosition(this->state.player);
         std::cerr << '\n';
 
         std::cerr << "Boxes:\n";
-        for (IntVec box : this->boxes) {
+        for (IntVec box : this->state.boxes) {
             std::cerr << '\t';
             logPosition(box);
-            std::cerr << '\n';
-        }
-        std::cerr << '\n';
-
-        std::cerr << "Holes:\n";
-        for (IntVec hole : this->holes) {
-            std::cerr << '\t';
-            logPosition(hole);
             std::cerr << '\n';
         }
         std::cerr << '\n';
@@ -79,13 +69,8 @@ class Game {
    private:
     bool hasBoxAt(IntVec position) const
     {
+        const auto& boxes = this->state.boxes;
         return std::find(boxes.cbegin(), boxes.cend(), position) !=
                boxes.cend();
-    }
-
-    bool hasHoleAt(IntVec position) const
-    {
-        return std::find(holes.cbegin(), holes.cend(), position) !=
-               holes.cend();
     }
 };
