@@ -45,6 +45,15 @@ void Game::update(Direction action)
     state.player = newPosition;
 }
 
+[[nodiscard]] u32 Game::numberOfFilledHoles() const
+{
+    return std::transform_reduce(
+        state.boxes.cbegin(), state.boxes.cend(), static_cast<u32>(0),
+        std::plus<>(), [&](const IntVec& box) {
+            return static_cast<u32>(board.at(box) == Board::Hole);
+        });
+}
+
 void Game::log() const
 {
     this->board.log();

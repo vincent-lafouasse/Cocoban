@@ -48,7 +48,11 @@ int main()
 
         BeginDrawing();
         Renderer::render(game);
-        DrawFPS(0, 0);
+
+        DrawText(TextFormat("Rem: %u", game.state.boxes.size() -
+                                           game.numberOfFilledHoles()),
+                 0, 0, 50, BLACK);
+        // DrawFPS(0, 0);
         EndDrawing();
     }
 }

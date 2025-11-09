@@ -12,6 +12,9 @@ class Game {
 
     explicit Game(const Board& board);
     void update(Direction action);
+
+    [[nodiscard]] u32 numberOfFilledHoles() const;
+
     void log() const;
 
    private:
