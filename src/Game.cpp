@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <numeric>
+#include <queue>
 
 Game::Game(const Board& board) : board(board), state()
 {
@@ -18,7 +19,9 @@ Game::Game(const Board& board) : board(board), state()
             }
         }
     }
-    // this->computeInaccessible();
+
+    this->computeInaccessible();
+    board.log();
 }
 
 namespace {
@@ -27,17 +30,37 @@ bool vectorContains(const std::vector<IntVec>& v, IntVec e)
     return std::ranges::find(v, e) != v.cend();
 }
 
-std::vector<IntVec> bfs(const std::vector<std::string> board, IntVec start)
+std::vector<IntVec> bfs(const Board& board, IntVec start)
 {
-    (void)board;
-    (void)start;
-    return {};
+    std::vector<IntVec> explored;
+    std::queue<IntVec> queue;
+    queue.push(start);
+
+    while (!queue.empty()) {
+        IntVec e = queue.back();
+        queue.pop();
+        explored.push_back(e);
+
+        for (Direction d : Direction::all()) {
+            IntVec candidate = e + d.asVec();
+            if (vectorContains(explored, candidate)) {
+                continue;
+            }
+            if (!board.inBounds(candidate) || board.at(candidate) == Board::Wall) {
+                continue;
+            }
+
+            queue.push(candidate);
+        }
+    }
+
+    return explored;
 }
 
-void intersectInPlace(std::vector<IntVec>& a, const std::vector<IntVec>& b)
+void subtractInPlace(std::vector<IntVec>& a, const std::vector<IntVec>& b)
 {
     auto newEnd = std::remove_if(
-        a.begin(), a.end(), [&](IntVec e) { return !vectorContains(b, e); });
+        a.begin(), a.end(), [&](IntVec e) { return vectorContains(b, e); });
 
     a.erase(newEnd, a.end());
 }
@@ -59,13 +82,13 @@ void Game::computeInaccessible()
 
     while (!candidates.empty()) {
         IntVec randomElement = *candidates.cbegin();
-        std::vector<IntVec> blob = bfs(board.data, randomElement);
+        std::vector<IntVec> blob = bfs(board, randomElement);
 
         if (!vectorContains(blob, state.player)) {
             outside.insert(outside.cend(), blob.cbegin(), blob.cend());
         }
 
-        intersectInPlace(candidates, blob);
+        subtractInPlace(candidates, blob);
     }
 
     for (IntVec pos : outside) {
