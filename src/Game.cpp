@@ -46,7 +46,8 @@ std::vector<IntVec> bfs(const Board& board, IntVec start)
             if (vectorContains(explored, candidate)) {
                 continue;
             }
-            if (!board.inBounds(candidate) || board.at(candidate) == Board::Wall) {
+            if (!board.inBounds(candidate) ||
+                board.at(candidate) == Board::Wall) {
                 continue;
             }
 
