@@ -9,7 +9,7 @@
 
 #include "Board.hpp"
 #include "Game.hpp"
-#include "colors/Rgb.hpp"
+#include "Rgb.hpp"
 
 static constexpr float degToRad = M_PI / 180.0f;
 
