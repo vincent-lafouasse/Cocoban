@@ -8,7 +8,7 @@
 
 int main()
 {
-    Board board = Board::load("levels/l2.map");
+    const Board board = Board::load("levels/l2.map");
     board.log();
 
     Game game(board);
@@ -39,6 +39,7 @@ int main()
                     case KEY_RIGHT:
                         game.update(Direction::Right);
                         break;
+                    default:;
                 }
             } else if (isDown && IsKeyUp(key)) {
                 isDown = false;

@@ -31,12 +31,12 @@ Board::Tile& Board::at(IntVec position)
 
 i32 Board::width() const
 {
-    return data[0].size();
+    return static_cast<i32>(data[0].size());
 }
 
 i32 Board::height() const
 {
-    return data.size();
+    return static_cast<i32>(data.size());
 }
 
 bool Board::inBounds(IntVec pos) const
