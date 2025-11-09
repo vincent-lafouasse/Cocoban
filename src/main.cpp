@@ -6,6 +6,7 @@
 #include "Board.hpp"
 #include "Game.hpp"
 #include "render/Renderer.hpp"
+#include "render/Rgb.hpp"
 
 int main(int ac, char* av[])
 {
@@ -77,7 +78,7 @@ int main(int ac, char* av[])
 
         DrawText(TextFormat("Rem: %u", game.state.boxes.size() -
                                            game.numberOfFilledHoles()),
-                 0, 0, 50, BLACK);
+                 0, 0, 50, catpuccin::Lavender.opaque());
         // DrawFPS(0, 0);
         EndDrawing();
     }

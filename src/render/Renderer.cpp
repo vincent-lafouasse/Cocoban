@@ -37,6 +37,9 @@ void Renderer::render(const Game& game)
                 case Board::Hole:
                     Renderer::renderHole({x, y});
                     break;
+                case Board::Outside:
+                    Renderer::fillTile({x, y}, BLACK);
+                    break;
                 default:
                     std::cerr << "Unexpected tile " << game.board.at({x, y});
                     std::cerr << " at position " << x << " " << y << std::endl;
