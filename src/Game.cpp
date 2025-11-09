@@ -20,8 +20,8 @@ Game::Game(const Board& board) : board(board), state()
         }
     }
 
-    // this->computeInaccessible();
-    board.log();
+    this->computeInaccessible();
+    this->board.log();
 }
 
 namespace {
@@ -32,12 +32,13 @@ bool vectorContains(const std::vector<IntVec>& v, IntVec e)
 
 std::vector<IntVec> bfs(const Board& board, IntVec start)
 {
-    std::vector<IntVec> explored = {start};
+    std::vector<IntVec> explored;
     std::queue<IntVec> queue;
     queue.push(start);
 
     while (!queue.empty()) {
         IntVec e = queue.back();
+        explored.push_back(e);
         queue.pop();
 
         for (Direction d : Direction::all()) {
@@ -51,7 +52,6 @@ std::vector<IntVec> bfs(const Board& board, IntVec start)
             }
 
             queue.push(candidate);
-            explored.push_back(candidate);
         }
     }
 
