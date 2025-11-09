@@ -22,14 +22,16 @@ int main(int ac, char* av[])
     board.log();
 
     Game game(board);
+    const Game::State resetState = game.state;
+    std::vector<Game::State> undoMemory = {resetState};
+
     Renderer renderer(board);
 
     using RaylibKey = int;
-    std::array<std::pair<RaylibKey, bool>, 4> keydowns = {
-        std::make_pair(KEY_UP, false),
-        std::make_pair(KEY_DOWN, false),
-        std::make_pair(KEY_LEFT, false),
-        std::make_pair(KEY_RIGHT, false),
+    std::array<std::pair<RaylibKey, bool>, 6> keydowns = {
+        std::make_pair(KEY_UP, false),   std::make_pair(KEY_DOWN, false),
+        std::make_pair(KEY_LEFT, false), std::make_pair(KEY_RIGHT, false),
+        std::make_pair(KEY_R, false),    std::make_pair(KEY_SPACE, false),
     };
 
     while (!WindowShouldClose()) {
@@ -39,15 +41,29 @@ int main(int ac, char* av[])
                 switch (key) {
                     case KEY_UP:
                         game.update(Direction::Up);
+                        undoMemory.push_back(game.state);
                         break;
                     case KEY_DOWN:
                         game.update(Direction::Down);
+                        undoMemory.push_back(game.state);
                         break;
                     case KEY_LEFT:
                         game.update(Direction::Left);
+                        undoMemory.push_back(game.state);
                         break;
                     case KEY_RIGHT:
                         game.update(Direction::Right);
+                        undoMemory.push_back(game.state);
+                        break;
+                    case KEY_SPACE:
+                        if (undoMemory.size() > 1) {
+                            // do not remove resetState from memory
+                            undoMemory.pop_back();
+                        }
+                        game.state = undoMemory.back();
+                        break;
+                    case KEY_R:
+                        game.state = resetState;
                         break;
                     default:;
                 }
