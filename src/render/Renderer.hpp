@@ -9,7 +9,7 @@ class Renderer {
    public:
     static constexpr i32 tileSize = 64;
 
-    Renderer(const Board& board);
+    explicit Renderer(const Board& board);
     ~Renderer();
 
     void render(const Game& game) const;
