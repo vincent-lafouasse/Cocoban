@@ -24,15 +24,25 @@ void Game::update(Direction action)
     IntVec movement = action.asVec();
     IntVec newPosition = this->state.player + movement;
 
-    if (board.at(newPosition) == Board::Wall) {
+    if (!board.inBounds(newPosition) || board.at(newPosition) == Board::Wall) {
         return;
     }
 
-    if (board.inBounds(newPosition)) {
-        this->state.player = newPosition;
+    auto maybeBox = std::ranges::find(state.boxes, newPosition);
+    if (maybeBox == state.boxes.cend()) {
+        state.player = newPosition;
+        return;
     }
 
-    this->log();
+    IntVec& box = *maybeBox;
+    IntVec boxNewPosition = box + movement;
+    if (!board.inBounds(boxNewPosition) ||
+        board.at(boxNewPosition) == Board::Wall || hasBoxAt(boxNewPosition)) {
+        return;
+    }
+
+    box = boxNewPosition;
+    state.player = newPosition;
 }
 
 void Game::log() const
