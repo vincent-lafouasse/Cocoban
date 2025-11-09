@@ -89,21 +89,21 @@ void Renderer::drawCross(IntVec position, Color color)
 void Renderer::renderHole(IntVec position)
 {
     Renderer::renderFloor(position);
-    const Color color = catpuccin::Lavender.opaque();
+    constexpr Color color = catpuccin::Lavender.opaque();
     // Renderer::fillTile(position, color);
     Renderer::drawCross(position, color);
 }
 
 void Renderer::renderBox(IntVec position)
 {
-    const Color color = catpuccin::Blue.opaque();
-    const Color innerColor = catpuccin::Sky.opaque();
+    constexpr Color color = catpuccin::Blue.opaque();
+    constexpr Color innerColor = catpuccin::Sky.opaque();
 
     Renderer::fillTile(position, color);
 
-    const float innerScale = 0.66f;
-    const float innerSize = static_cast<float>(Renderer::tileSize) * innerScale;
-    const Vector2 sz = {innerSize, innerSize};
+    constexpr float innerScale = 0.66f;
+    constexpr float innerSize = static_cast<float>(Renderer::tileSize) * innerScale;
+    constexpr Vector2 sz = {innerSize, innerSize};
 
     const float offset =
         static_cast<float>(Renderer::tileSize) * (1.0f - innerScale) / 2.0f;
@@ -117,18 +117,18 @@ void Renderer::renderBox(IntVec position)
 
 void Renderer::renderPlayer(IntVec position)
 {
-    const Color color = catpuccin::Red.opaque();
+    constexpr Color color = catpuccin::Red.opaque();
     Renderer::fillTile(position, color);
 }
 
 void Renderer::renderFloor(IntVec position)
 {
-    const Color color = catpuccin::Rosewater.opaque();
+    constexpr Color color = catpuccin::Rosewater.opaque();
     Renderer::fillTile(position, color);
 }
 
 void Renderer::renderWall(IntVec position)
 {
-    const Color color = catpuccin::DarkGray.opaque();
+    constexpr Color color = catpuccin::DarkGray.opaque();
     Renderer::fillTile(position, color);
 }
