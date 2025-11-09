@@ -17,44 +17,14 @@ struct Board {
 
     std::vector<std::string> data;
 
-    static Board load(const std::string& path)
-    {
-        std::ifstream input(path);
-        if (!input.good()) {
-            std::cout << "Failed to open file " << path << std::endl;
-        }
+    static Board load(const std::string& path);
 
-        std::vector<std::string> data;
+    Tile at(IntVec position) const;
+    Tile& at(IntVec position);
 
-        for (std::string line; std::getline(input, line);) {
-            data.push_back(line);
-        }
+    i32 width() const;
+    i32 height() const;
+    bool inBounds(IntVec pos) const;
 
-        return {data};
-    }
-
-    Tile at(IntVec position) const
-    {
-        return this->data[position.y][position.x];
-    }
-
-    Tile& at(IntVec position) { return this->data[position.y][position.x]; }
-
-    i32 width() const { return data[0].size(); }
-
-    i32 height() const { return data.size(); }
-
-    bool inBounds(IntVec pos) const
-    {
-        const bool horizontal = pos.x >= 0 && pos.x < this->width();
-        const bool vertical = pos.y >= 0 && pos.y < this->height();
-        return horizontal && vertical;
-    }
-
-    void log() const
-    {
-        for (const auto& line : data) {
-            std::cout << line << std::endl;
-        }
-    }
+    void log() const;
 };
