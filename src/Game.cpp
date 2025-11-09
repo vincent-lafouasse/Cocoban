@@ -1,6 +1,5 @@
 #include "Game.hpp"
 
-#include <algorithm>
 #include <iostream>
 
 Game::Game(const Board& board) : board(board), state()
@@ -60,5 +59,5 @@ void Game::log() const
 bool Game::hasBoxAt(IntVec position) const
 {
     const auto& boxes = this->state.boxes;
-    return std::find(boxes.cbegin(), boxes.cend(), position) != boxes.cend();
+    return std::ranges::find(boxes, position) != boxes.cend();
 }
