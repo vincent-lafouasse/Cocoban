@@ -102,7 +102,8 @@ void Renderer::renderBox(IntVec position)
     Renderer::fillTile(position, color);
 
     constexpr float innerScale = 0.66f;
-    constexpr float innerSize = static_cast<float>(Renderer::tileSize) * innerScale;
+    constexpr float innerSize =
+        static_cast<float>(Renderer::tileSize) * innerScale;
     constexpr Vector2 sz = {innerSize, innerSize};
 
     const float offset =
