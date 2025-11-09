@@ -28,7 +28,7 @@ struct Direction {
         Right,
     } inner;
 
-    Direction(Inner inner);
+    explicit Direction(Inner inner);
 
     [[nodiscard]] IntVec asVec() const;
     static std::array<Direction, 4> all();
