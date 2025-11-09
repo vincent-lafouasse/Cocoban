@@ -79,8 +79,8 @@ void Renderer::drawCross(IntVec position, Color color)
 
     for (float angle : angles) {
         const float rad = angle * degToRad;
-        const Vector2 end = {center.x + std::cosf(rad) * lineLength,
-                             center.y + std::sinf(rad) * lineLength};
+        const Vector2 end = {center.x + std::cos(rad) * lineLength,
+                             center.y + std::sin(rad) * lineLength};
 
         DrawLineEx(center, end, lineWidth, color);
     }
