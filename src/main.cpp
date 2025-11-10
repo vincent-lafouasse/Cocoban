@@ -30,6 +30,8 @@ int main(int ac, char* av[])
         std::make_pair(KEY_UP, false),   std::make_pair(KEY_DOWN, false),
         std::make_pair(KEY_LEFT, false), std::make_pair(KEY_RIGHT, false),
         std::make_pair(KEY_R, false),    std::make_pair(KEY_SPACE, false),
+        std::make_pair(KEY_W, false),    std::make_pair(KEY_S, false),
+        std::make_pair(KEY_A, false),    std::make_pair(KEY_D, false),
     };
 
     while (!WindowShouldClose()) {
@@ -37,18 +39,22 @@ int main(int ac, char* av[])
             if (!isDown && IsKeyDown(key)) {
                 isDown = true;
                 switch (key) {
+                    case KEY_W:
                     case KEY_UP:
                         game.update(Direction::Up);
                         undoMemory.push_back(game.state);
                         break;
+                    case KEY_S:
                     case KEY_DOWN:
                         game.update(Direction::Down);
                         undoMemory.push_back(game.state);
                         break;
+                    case KEY_A:
                     case KEY_LEFT:
                         game.update(Direction::Left);
                         undoMemory.push_back(game.state);
                         break;
+                    case KEY_D:
                     case KEY_RIGHT:
                         game.update(Direction::Right);
                         undoMemory.push_back(game.state);
