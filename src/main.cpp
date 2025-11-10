@@ -22,8 +22,7 @@ int main(int ac, char* av[])
     const Board board = Board::load(levelPath);
 
     Game game(board);
-    const Game::State resetState = game.state;
-    std::vector<Game::State> undoMemory = {resetState};
+    std::vector<Game::State> undoMemory = {game.state};
 
     Renderer renderer(board);
 
@@ -63,7 +62,7 @@ int main(int ac, char* av[])
                         game.state = undoMemory.back();
                         break;
                     case KEY_R:
-                        game.state = resetState;
+                        game.state = undoMemory.front();
                         break;
                     default:;
                 }
