@@ -1,5 +1,6 @@
 #include "Renderer.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <format>
@@ -51,9 +52,8 @@ void Renderer::render(const Game& game)
             }
         }
     }
-    for (Position box : game.state.boxes) {
-        Renderer::renderBox(box);
-    }
+
+    std::ranges::for_each(game.state.boxes, Renderer::renderBox);
     Renderer::renderPlayer(game.state.player);
 }
 
