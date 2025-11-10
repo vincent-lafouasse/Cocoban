@@ -74,7 +74,6 @@ std::vector<Position> bfs(const Board& board, Position start)
 void Game::computeInaccessible()
 {
     std::vector<Position> candidates;
-
     for (i32 x = 0; x < board.width(); x++) {
         for (i32 y = 0; y < board.height(); y++) {
             if (board.at({x, y}) != Board::Wall) {
@@ -84,7 +83,6 @@ void Game::computeInaccessible()
     }
 
     std::vector<Position> outside;
-
     while (!candidates.empty()) {
         Position randomElement = *candidates.cbegin();
         std::vector<Position> blob = bfs(board, randomElement);
