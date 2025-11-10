@@ -4,8 +4,8 @@
 
 #include <raylib.h>
 
-#include "Board.hpp"
-#include "Game.hpp"
+#include "game/Game.hpp"
+
 #include "render/Renderer.hpp"
 #include "render/Rgb.hpp"
 

@@ -2,8 +2,8 @@
 
 #include <raylib.h>
 
-#include "Board.hpp"
-#include "Game.hpp"
+#include "game/Board.hpp"
+#include "game/Game.hpp"
 
 class Renderer {
    public:
