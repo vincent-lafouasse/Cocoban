@@ -126,7 +126,7 @@ void Renderer::renderPlayer(Position position)
 
 void Renderer::renderFloor(Position position)
 {
-    constexpr Color color = catpuccin::Rosewater.opaque();
+    constexpr Color color = catpuccin::Yellow.opaque();
     Renderer::fillTile(position, color);
 }
 
