@@ -25,24 +25,26 @@ Game::Game(const Board& board) : board(board), state()
 }
 
 namespace {
-bool vectorContains(const std::vector<IntVec>& v, IntVec e)
+using Position = Game::Position;
+
+bool vectorContains(const std::vector<Position>& v, Position e)
 {
     return std::ranges::find(v, e) != v.cend();
 }
 
-std::vector<IntVec> bfs(const Board& board, IntVec start)
+std::vector<Position> bfs(const Board& board, Position start)
 {
-    std::vector<IntVec> explored;
-    std::queue<IntVec> queue;
+    std::vector<Position> explored;
+    std::queue<Position> queue;
     queue.push(start);
 
     while (!queue.empty()) {
-        IntVec e = queue.back();
+        Position e = queue.back();
         explored.push_back(e);
         queue.pop();
 
         for (Direction d : Direction::all()) {
-            IntVec candidate = e + d.asVec();
+            Position candidate = e + d.asVec();
             if (vectorContains(explored, candidate)) {
                 continue;
             }
@@ -58,10 +60,10 @@ std::vector<IntVec> bfs(const Board& board, IntVec start)
     return explored;
 }
 
-void subtractInPlace(std::vector<IntVec>& a, const std::vector<IntVec>& b)
+void subtractInPlace(std::vector<Position>& a, const std::vector<Position>& b)
 {
     auto newEnd = std::remove_if(
-        a.begin(), a.end(), [&](IntVec e) { return vectorContains(b, e); });
+        a.begin(), a.end(), [&](Position e) { return vectorContains(b, e); });
 
     a.erase(newEnd, a.end());
 }
@@ -69,7 +71,7 @@ void subtractInPlace(std::vector<IntVec>& a, const std::vector<IntVec>& b)
 
 void Game::computeInaccessible()
 {
-    std::vector<IntVec> candidates;
+    std::vector<Position> candidates;
 
     for (i32 x = 0; x < board.width(); x++) {
         for (i32 y = 0; y < board.height(); y++) {
@@ -79,29 +81,29 @@ void Game::computeInaccessible()
         }
     }
 
-    std::vector<IntVec> outside;
+    std::vector<Position> outside;
 
     while (!candidates.empty()) {
-        IntVec randomElement = *candidates.cbegin();
-        std::vector<IntVec> blob = bfs(board, randomElement);
+        Position randomElement = *candidates.cbegin();
+        std::vector<Position> blob = bfs(board, randomElement);
 
         if (!vectorContains(blob, state.player)) {
-            for (IntVec pos : blob)
+            for (Position pos : blob)
                 outside.push_back(pos);
         }
 
         subtractInPlace(candidates, blob);
     }
 
-    for (IntVec pos : outside) {
+    for (Position pos : outside) {
         board.at(pos) = Board::Outside;
     }
 }
 
 void Game::update(Direction action)
 {
-    IntVec movement = action.asVec();
-    IntVec newPosition = this->state.player + movement;
+    Position movement = action.asVec();
+    Position newPosition = this->state.player + movement;
 
     if (!board.inBounds(newPosition) || board.at(newPosition) == Board::Wall) {
         return;
@@ -113,8 +115,8 @@ void Game::update(Direction action)
         return;
     }
 
-    IntVec& box = *maybeBox;
-    IntVec boxNewPosition = box + movement;
+    Position& box = *maybeBox;
+    Position boxNewPosition = box + movement;
     if (!board.inBounds(boxNewPosition) ||
         board.at(boxNewPosition) == Board::Wall || hasBoxAt(boxNewPosition)) {
         return;
@@ -128,7 +130,7 @@ void Game::update(Direction action)
 {
     return std::transform_reduce(
         state.boxes.cbegin(), state.boxes.cend(), static_cast<u32>(0),
-        std::plus<>(), [&](const IntVec& box) {
+        std::plus<>(), [&](const Position& box) {
             return static_cast<u32>(board.at(box) == Board::Hole);
         });
 }
@@ -137,7 +139,7 @@ void Game::log() const
 {
     this->board.log();
 
-    auto logPosition = [](const IntVec pos) {
+    auto logPosition = [](const Position pos) {
         std::cerr << "{ " << pos.x << ", " << pos.y << " }";
     };
 
@@ -146,7 +148,7 @@ void Game::log() const
     std::cerr << '\n';
 
     std::cerr << "Boxes:\n";
-    for (IntVec box : this->state.boxes) {
+    for (Position box : this->state.boxes) {
         std::cerr << '\t';
         logPosition(box);
         std::cerr << '\n';
@@ -154,7 +156,7 @@ void Game::log() const
     std::cerr << '\n';
 }
 
-bool Game::hasBoxAt(IntVec position) const
+bool Game::hasBoxAt(Position position) const
 {
     const auto& boxes = this->state.boxes;
     return std::ranges::find(boxes, position) != boxes.cend();

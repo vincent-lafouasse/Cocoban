@@ -4,10 +4,12 @@
 
 class Game {
    public:
+    using Position = IntVec;
+
     Board board;
     struct State {
-        IntVec player;
-        std::vector<IntVec> boxes;
+        Position player;
+        std::vector<Position> boxes;
     } state;
 
     explicit Game(const Board& board);
@@ -18,6 +20,6 @@ class Game {
     void log() const;
 
    private:
-    [[nodiscard]] bool hasBoxAt(IntVec position) const;
+    [[nodiscard]] bool hasBoxAt(Position position) const;
     void computeInaccessible();
 };
