@@ -37,8 +37,8 @@ bool vectorContains(const std::vector<T>& v, T e)
 template <typename T>
 void subtractInPlace(std::vector<T>& a, const std::vector<T>& b)
 {
-    auto newEnd = std::remove_if(a.begin(), a.end(),
-                                 [&](T e) { return vectorContains<T>(b, e); });
+    const auto newEnd = std::remove_if(
+        a.begin(), a.end(), [&](T e) { return vectorContains<T>(b, e); });
 
     a.erase(newEnd, a.end());
 }
@@ -50,12 +50,12 @@ std::vector<Position> bfs(const Board& board, Position start)
     queue.push(start);
 
     while (!queue.empty()) {
-        Position e = queue.front();
+        const Position e = queue.front();
         explored.push_back(e);
         queue.pop();
 
-        for (Direction d : Direction::all()) {
-            Position candidate = e + d.asVec();
+        for (const Direction d : Direction::all()) {
+            const Position candidate = e + d.asVec();
             if (vectorContains(explored, candidate)) {
                 continue;
             }
@@ -89,35 +89,35 @@ void Game::computeInaccessible()
         std::vector<Position> blob = bfs(board, randomElement);
 
         if (!vectorContains(blob, state.player)) {
-            for (Position pos : blob)
+            for (const Position pos : blob)
                 outside.push_back(pos);
         }
 
         subtractInPlace(candidates, blob);
     }
 
-    for (Position pos : outside) {
+    for (const Position pos : outside) {
         board.at(pos) = Board::Outside;
     }
 }
 
 void Game::update(Direction action)
 {
-    Position movement = action.asVec();
-    Position newPosition = this->state.player + movement;
+    const Position movement = action.asVec();
+    const Position newPosition = this->state.player + movement;
 
     if (!board.inBounds(newPosition) || board.at(newPosition) == Board::Wall) {
         return;
     }
 
-    auto maybeBox = std::ranges::find(state.boxes, newPosition);
+    const auto maybeBox = std::ranges::find(state.boxes, newPosition);
     if (maybeBox == state.boxes.cend()) {
         state.player = newPosition;
         return;
     }
 
     Position& box = *maybeBox;
-    Position boxNewPosition = box + movement;
+    const Position boxNewPosition = box + movement;
     if (!board.inBounds(boxNewPosition) ||
         board.at(boxNewPosition) == Board::Wall || hasBoxAt(boxNewPosition)) {
         return;
