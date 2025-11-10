@@ -21,7 +21,7 @@ Game::Game(const Board& board) : board(board), state()
         }
     }
 
-    // this->computeInaccessible();
+    this->computeInaccessible();
     this->board.log();
 }
 
@@ -41,6 +41,17 @@ void subtractInPlace(std::vector<T>& a, const std::vector<T>& b)
                                  [&](T e) { return vectorContains<T>(b, e); });
 
     a.erase(newEnd, a.end());
+}
+
+void logPositionVector(const std::vector<Position>& v)
+{
+    std::cerr << "{\n";
+
+    for (Position pos: v) {
+        std::cerr << "\t" << pos.str() << "\n";
+    }
+
+    std::cerr << "}" << std::endl;
 }
 
 std::vector<Position> bfs(const Board& board, Position start)
@@ -89,6 +100,9 @@ void Game::computeInaccessible()
     while (!candidates.empty()) {
         Position randomElement = *candidates.cbegin();
         std::vector<Position> blob = bfs(board, randomElement);
+
+        std::cerr << "Blob:\n";
+        logPositionVector(blob);
 
         if (!vectorContains(blob, state.player)) {
             for (Position pos : blob)
