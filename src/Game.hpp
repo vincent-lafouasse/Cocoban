@@ -4,7 +4,7 @@
 
 class Game {
    public:
-    using Position = IntVec;
+    using Position = Board::Position;
 
     Board board;
     struct State {

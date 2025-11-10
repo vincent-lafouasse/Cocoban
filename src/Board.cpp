@@ -30,12 +30,12 @@ Board Board::load(const std::string& path)
     return {data};
 }
 
-Board::Tile Board::at(IntVec position) const
+Board::Tile Board::at(Position position) const
 {
     return this->data[position.y][position.x];
 }
 
-Board::Tile& Board::at(IntVec position)
+Board::Tile& Board::at(Position position)
 {
     return this->data[position.y][position.x];
 }
@@ -50,7 +50,7 @@ i32 Board::height() const
     return static_cast<i32>(data.size());
 }
 
-bool Board::inBounds(IntVec pos) const
+bool Board::inBounds(Position pos) const
 {
     const bool horizontal = pos.x >= 0 && pos.x < this->width();
     const bool vertical = pos.y >= 0 && pos.y < this->height();

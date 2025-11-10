@@ -8,6 +8,7 @@
 
 struct Board {
     using Tile = char;
+    using Position = IntVec;
     static constexpr Tile Wall = '#';
     static constexpr Tile Empty = ' ';
     static constexpr Tile Player = '@';
@@ -19,12 +20,12 @@ struct Board {
 
     static Board load(const std::string& path);
 
-    [[nodiscard]] Tile at(IntVec position) const;
-    Tile& at(IntVec position);
+    [[nodiscard]] Tile at(Position position) const;
+    Tile& at(Position position);
 
     [[nodiscard]] i32 width() const;
     [[nodiscard]] i32 height() const;
-    [[nodiscard]] bool inBounds(IntVec pos) const;
+    [[nodiscard]] bool inBounds(Position pos) const;
 
     void log() const;
 };

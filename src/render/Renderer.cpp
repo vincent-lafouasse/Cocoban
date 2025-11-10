@@ -48,30 +48,30 @@ void Renderer::render(const Game& game)
             }
         }
     }
-    for (IntVec box : game.state.boxes) {
+    for (Position box : game.state.boxes) {
         Renderer::renderBox(box);
     }
     Renderer::renderPlayer(game.state.player);
 }
 
-void Renderer::fillTile(IntVec position, Color color)
+void Renderer::fillTile(Position position, Color color)
 {
     DrawRectangle(position.x * Renderer::tileSize,
                   position.y * Renderer::tileSize, Renderer::tileSize,
                   Renderer::tileSize, color);
 }
 
-void Renderer::drawCross(IntVec position, Color color)
+void Renderer::drawCross(Position position, Color color)
 {
     constexpr float lineWidth = static_cast<float>(Renderer::tileSize) * 0.1f;
     constexpr float lineLength = static_cast<float>(Renderer::tileSize) / 2;
 
-    const IntVec centerInt =
-        IntVec{
+    const Position centerInt =
+        Position{
             position.x * Renderer::tileSize,
             position.y * Renderer::tileSize,
         } +
-        IntVec{Renderer::tileSize / 2, Renderer::tileSize / 2};
+        Position{Renderer::tileSize / 2, Renderer::tileSize / 2};
     const Vector2 center = {
         static_cast<float>(centerInt.x),
         static_cast<float>(centerInt.y),
@@ -88,7 +88,7 @@ void Renderer::drawCross(IntVec position, Color color)
     }
 }
 
-void Renderer::renderHole(IntVec position)
+void Renderer::renderHole(Position position)
 {
     Renderer::renderFloor(position);
     constexpr Color color = catpuccin::Lavender.opaque();
@@ -96,7 +96,7 @@ void Renderer::renderHole(IntVec position)
     Renderer::drawCross(position, color);
 }
 
-void Renderer::renderBox(IntVec position)
+void Renderer::renderBox(Position position)
 {
     constexpr Color color = catpuccin::Blue.opaque();
     constexpr Color innerColor = catpuccin::Sky.opaque();
@@ -118,19 +118,19 @@ void Renderer::renderBox(IntVec position)
     DrawRectangleV(corner, sz, innerColor);
 }
 
-void Renderer::renderPlayer(IntVec position)
+void Renderer::renderPlayer(Position position)
 {
     constexpr Color color = catpuccin::Red.opaque();
     Renderer::fillTile(position, color);
 }
 
-void Renderer::renderFloor(IntVec position)
+void Renderer::renderFloor(Position position)
 {
     constexpr Color color = catpuccin::Rosewater.opaque();
     Renderer::fillTile(position, color);
 }
 
-void Renderer::renderWall(IntVec position)
+void Renderer::renderWall(Position position)
 {
     constexpr Color color = catpuccin::DarkGray.opaque();
     Renderer::fillTile(position, color);

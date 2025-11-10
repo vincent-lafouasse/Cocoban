@@ -7,6 +7,8 @@
 
 class Renderer {
    public:
+    using Position = Game::Position;
+
     static constexpr i32 tileSize = 64;
 
     explicit Renderer(const Board& board);
@@ -15,12 +17,12 @@ class Renderer {
     static void render(const Game& game);
 
    private:
-    static void renderHole(IntVec position);
-    static void renderBox(IntVec position);
-    static void renderPlayer(IntVec position);
-    static void renderFloor(IntVec position);
-    static void renderWall(IntVec position);
+    static void renderHole(Position position);
+    static void renderBox(Position position);
+    static void renderPlayer(Position position);
+    static void renderFloor(Position position);
+    static void renderWall(Position position);
 
-    static void fillTile(IntVec position, Color color);
-    static void drawCross(IntVec position, Color color);
+    static void fillTile(Position position, Color color);
+    static void drawCross(Position position, Color color);
 };
