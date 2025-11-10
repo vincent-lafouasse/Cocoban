@@ -74,30 +74,17 @@ std::vector<Position> bfs(const Board& board, Position start)
 
 void Game::computeInaccessible()
 {
-    std::vector<Position> candidates;
+    std::vector<Position> accessible = bfs(this->board, this->state.player);
+
     for (i32 x = 0; x < board.width(); x++) {
         for (i32 y = 0; y < board.height(); y++) {
-            if (board.at({x, y}) != Board::Wall) {
-                candidates.push_back({x, y});
+            const Position pos = {x, y};
+            Board::Tile& tile = board.at(pos);
+
+            if (tile != Board::Wall && !vectorContains(accessible, pos)) {
+                tile = Board::Outside;
             }
         }
-    }
-
-    std::vector<Position> outside;
-    while (!candidates.empty()) {
-        Position randomElement = *candidates.cbegin();
-        std::vector<Position> blob = bfs(board, randomElement);
-
-        if (!vectorContains(blob, state.player)) {
-            for (const Position pos : blob)
-                outside.push_back(pos);
-        }
-
-        subtractInPlace(candidates, blob);
-    }
-
-    for (const Position pos : outside) {
-        board.at(pos) = Board::Outside;
     }
 }
 
