@@ -27,9 +27,19 @@ Game::Game(const Board& board) : board(board), state()
 namespace {
 using Position = Game::Position;
 
-bool vectorContains(const std::vector<Position>& v, Position e)
+template <typename T>
+bool vectorContains(const std::vector<T>& v, T e)
 {
     return std::ranges::find(v, e) != v.cend();
+}
+
+template <typename T>
+void subtractInPlace(std::vector<T>& a, const std::vector<T>& b)
+{
+    auto newEnd = std::remove_if(a.begin(), a.end(),
+                                 [&](T e) { return vectorContains<T>(b, e); });
+
+    a.erase(newEnd, a.end());
 }
 
 std::vector<Position> bfs(const Board& board, Position start)
@@ -58,14 +68,6 @@ std::vector<Position> bfs(const Board& board, Position start)
     }
 
     return explored;
-}
-
-void subtractInPlace(std::vector<Position>& a, const std::vector<Position>& b)
-{
-    auto newEnd = std::remove_if(
-        a.begin(), a.end(), [&](Position e) { return vectorContains(b, e); });
-
-    a.erase(newEnd, a.end());
 }
 }  // namespace
 
