@@ -26,8 +26,7 @@ int main(int ac, char* av[])
 
     Renderer renderer(board);
 
-    using RaylibKey = int;
-    std::array<std::pair<RaylibKey, bool>, 6> keydowns = {
+    std::array keydowns = {
         std::make_pair(KEY_UP, false),   std::make_pair(KEY_DOWN, false),
         std::make_pair(KEY_LEFT, false), std::make_pair(KEY_RIGHT, false),
         std::make_pair(KEY_R, false),    std::make_pair(KEY_SPACE, false),
