@@ -47,7 +47,7 @@ void logPositionVector(const std::vector<Position>& v)
 {
     std::cerr << "{\n";
 
-    for (Position pos: v) {
+    for (Position pos : v) {
         std::cerr << "\t" << pos.str() << "\n";
     }
 
