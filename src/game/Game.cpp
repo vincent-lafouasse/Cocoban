@@ -34,15 +34,6 @@ bool vectorContains(const std::vector<T>& v, T e)
     return std::ranges::find(v, e) != v.cend();
 }
 
-template <typename T>
-void subtractInPlace(std::vector<T>& a, const std::vector<T>& b)
-{
-    const auto newEnd = std::remove_if(
-        a.begin(), a.end(), [&](T e) { return vectorContains<T>(b, e); });
-
-    a.erase(newEnd, a.end());
-}
-
 std::vector<Position> bfs(const Board& board, Position start)
 {
     std::vector<Position> explored;
