@@ -9,7 +9,7 @@
 namespace {
 void padToSameLength(std::vector<std::string>& lines)
 {
-    u32 maxLen = std::transform_reduce(
+    const u32 maxLen = std::transform_reduce(
         lines.cbegin(), lines.cend(), static_cast<u32>(0),
         [](u32 acc, u32 e) { return std::max(acc, e); },
         [](const std::string& line) { return line.size(); });
