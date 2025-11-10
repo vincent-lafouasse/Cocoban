@@ -21,7 +21,7 @@ struct Board {
     static Board load(const std::string& path);
 
     [[nodiscard]] Tile at(Position position) const;
-    Tile& at(Position position);
+    [[nodiscard]] Tile& at(Position position);
 
     [[nodiscard]] i32 width() const;
     [[nodiscard]] i32 height() const;
