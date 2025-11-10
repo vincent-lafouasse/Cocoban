@@ -1,6 +1,7 @@
 #include "Board.hpp"
 
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <numeric>
 
@@ -60,6 +61,6 @@ bool Board::inBounds(Position pos) const
 void Board::log() const
 {
     for (const auto& line : data) {
-        std::cout << line << std::endl;
+        std::cout << std::quoted(line) << std::endl;
     }
 }

@@ -1,5 +1,7 @@
 #include "geometry.hpp"
 
+#include <sstream>
+
 IntVec IntVec::up() const
 {
     return {x, y - 1};
@@ -35,6 +37,14 @@ bool IntVec::operator==(const IntVec& other) const
 bool IntVec::operator!=(const IntVec& other) const
 {
     return !(*this == other);
+}
+
+std::string IntVec::str() const
+{
+    std::stringstream ss;
+
+    ss << "{ " << this->x << ", " << this->y << " }";
+    return ss.str();
 }
 
 Direction::Direction(Inner inner) : inner(inner) {}

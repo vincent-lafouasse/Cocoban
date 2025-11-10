@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 #include "ints.hpp"
 
@@ -14,6 +15,8 @@ struct IntVec {
     [[nodiscard]] IntVec right() const;
 
     [[nodiscard]] IntVec scaleUp(i32 scale) const;
+
+    [[nodiscard]] std::string str() const;
 
     IntVec operator+(const IntVec& other) const;
     bool operator==(const IntVec& other) const;

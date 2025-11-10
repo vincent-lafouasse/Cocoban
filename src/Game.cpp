@@ -21,8 +21,7 @@ Game::Game(const Board& board) : board(board), state()
         }
     }
 
-    // this->computeInaccessible();
-    this->board.log();
+    this->computeInaccessible();
 }
 
 namespace {
@@ -50,7 +49,7 @@ std::vector<Position> bfs(const Board& board, Position start)
     queue.push(start);
 
     while (!queue.empty()) {
-        Position e = queue.back();
+        Position e = queue.front();
         explored.push_back(e);
         queue.pop();
 
@@ -75,7 +74,6 @@ std::vector<Position> bfs(const Board& board, Position start)
 void Game::computeInaccessible()
 {
     std::vector<Position> candidates;
-
     for (i32 x = 0; x < board.width(); x++) {
         for (i32 y = 0; y < board.height(); y++) {
             if (board.at({x, y}) != Board::Wall) {
@@ -85,7 +83,6 @@ void Game::computeInaccessible()
     }
 
     std::vector<Position> outside;
-
     while (!candidates.empty()) {
         Position randomElement = *candidates.cbegin();
         std::vector<Position> blob = bfs(board, randomElement);
@@ -142,19 +139,11 @@ void Game::log() const
 {
     this->board.log();
 
-    auto logPosition = [](const Position pos) {
-        std::cerr << "{ " << pos.x << ", " << pos.y << " }";
-    };
-
-    std::cerr << "Player:\n\t";
-    logPosition(this->state.player);
-    std::cerr << '\n';
+    std::cerr << "Player:\n\t" << state.player.str() << "\n";
 
     std::cerr << "Boxes:\n";
     for (Position box : this->state.boxes) {
-        std::cerr << '\t';
-        logPosition(box);
-        std::cerr << '\n';
+        std::cerr << '\t' << box.str() << '\n';
     }
     std::cerr << '\n';
 }
