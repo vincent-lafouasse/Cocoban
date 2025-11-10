@@ -11,6 +11,7 @@ PRIVATE
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ./)
+target_include_directories(${PROJECT_NAME} PUBLIC ./common/)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
