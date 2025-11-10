@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
 #include <algorithm>
+#include <format>
 #include <iostream>
 #include <numeric>
 #include <queue>
@@ -139,13 +140,13 @@ void Game::log() const
 {
     this->board.log();
 
-    std::cerr << "Player:\n\t" << state.player.str() << "\n";
+    std::cerr << std::format("Player:\n\t{}\n", state.player.str());
 
     std::cerr << "Boxes:\n";
     for (Position box : this->state.boxes) {
-        std::cerr << '\t' << box.str() << '\n';
+        std::cerr << std::format("\t{}\n", box.str());
     }
-    std::cerr << '\n';
+    std::cerr << std::endl;
 }
 
 bool Game::hasBoxAt(Position position) const

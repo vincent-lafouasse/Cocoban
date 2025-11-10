@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cmath>
+#include <format>
 #include <iostream>
 
 #include "Rgb.hpp"
@@ -41,8 +42,10 @@ void Renderer::render(const Game& game)
                     Renderer::fillTile({x, y}, BLACK);
                     break;
                 default:
-                    std::cerr << "Unexpected tile " << game.board.at({x, y});
-                    std::cerr << " at position " << x << " " << y << std::endl;
+                    std::cerr
+                        << std::format("Unexpected tile {} at position {}, {}",
+                                       game.board.at({x, y}), x, y);
+                    std::cerr << std::endl;
                     game.board.log();
                     std::exit(1);
             }

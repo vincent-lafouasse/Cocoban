@@ -11,9 +11,8 @@
 int main(int ac, char* av[])
 {
     if (ac != 2) {
-        std::cerr << "Usage: " << av[0] << " ";
-        std::cerr << "level.map" << '\n';
-        std::cerr << "\nYou may find maps in levels/";
+        std::cerr << std::format("Usage: {} level.map\n\n", av[0]);
+        std::cerr << "You may find maps in levels/";
         std::cerr << std::endl;
         std::exit(1);
     }
