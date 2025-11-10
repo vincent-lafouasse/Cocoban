@@ -1,5 +1,6 @@
 #include "Board.hpp"
 
+#include <format>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
