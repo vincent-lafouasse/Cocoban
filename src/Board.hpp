@@ -27,5 +27,7 @@ struct Board {
     [[nodiscard]] i32 height() const;
     [[nodiscard]] bool inBounds(Position pos) const;
 
+    [[nodiscard]] static std::string tileRepr(Tile t);
+
     void log() const;
 };

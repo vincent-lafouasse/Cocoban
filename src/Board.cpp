@@ -64,3 +64,23 @@ void Board::log() const
         std::cout << std::quoted(line) << std::endl;
     }
 }
+
+std::string Board::tileRepr(Tile t)
+{
+    switch (t) {
+        case Wall:
+            return "Wall";
+        case Empty:
+            return "Empty";
+        case Player:
+            return "Player";
+        case Box:
+            return "Box";
+        case Hole:
+            return "Hole";
+        case Outside:
+            return "Outside";
+        default:
+            return std::format("Unknown: {}", t);
+    }
+}

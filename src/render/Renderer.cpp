@@ -42,9 +42,9 @@ void Renderer::render(const Game& game)
                     Renderer::fillTile({x, y}, BLACK);
                     break;
                 default:
-                    std::cerr
-                        << std::format("Unexpected tile {} at position {}, {}",
-                                       game.board.at({x, y}), x, y);
+                    std::cerr << std::format(
+                        "Unexpected tile {} at position {}, {}",
+                        Board::tileRepr(game.board.at({x, y})), x, y);
                     std::cerr << std::endl;
                     game.board.log();
                     std::exit(1);
