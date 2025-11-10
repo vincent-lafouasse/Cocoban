@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "geometry.hpp"
+#include "geometry/IntVec.hpp"
 #include "ints.hpp"
 
 struct Board {

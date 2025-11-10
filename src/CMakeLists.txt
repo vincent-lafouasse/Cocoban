@@ -2,11 +2,12 @@ add_executable(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
 PRIVATE
-        main.cpp
+	main.cpp
 	game/Board.cpp
 	game/Game.cpp
 	render/Renderer.cpp
-	geometry.cpp
+	geometry/IntVec.cpp
+	geometry/Direction.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ./)

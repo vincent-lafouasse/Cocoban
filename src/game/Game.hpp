@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Board.hpp"
+#include "geometry/Direction.hpp"
 
 class Game {
    public:

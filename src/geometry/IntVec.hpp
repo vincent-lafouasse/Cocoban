@@ -1,6 +1,5 @@
 #pragma once
 
-#include <array>
 #include <string>
 
 #include "ints.hpp"
@@ -21,18 +20,4 @@ struct IntVec {
     IntVec operator+(const IntVec& other) const;
     bool operator==(const IntVec& other) const;
     bool operator!=(const IntVec& other) const;
-};
-
-struct Direction {
-    enum Inner {
-        Up,
-        Down,
-        Left,
-        Right,
-    } inner;
-
-    Direction(Inner inner);  // NOLINT(*-explicit-constructor)
-
-    [[nodiscard]] IntVec asVec() const;
-    [[nodiscard]] static std::array<Direction, 4> all();
 };
