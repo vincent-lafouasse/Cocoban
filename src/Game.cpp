@@ -142,19 +142,11 @@ void Game::log() const
 {
     this->board.log();
 
-    auto logPosition = [](const Position pos) {
-        std::cerr << "{ " << pos.x << ", " << pos.y << " }";
-    };
-
-    std::cerr << "Player:\n\t";
-    logPosition(this->state.player);
-    std::cerr << '\n';
+    std::cerr << "Player:\n\t" << state.player.str() << "\n";
 
     std::cerr << "Boxes:\n";
     for (Position box : this->state.boxes) {
-        std::cerr << '\t';
-        logPosition(box);
-        std::cerr << '\n';
+        std::cerr << '\t' << box.str() << '\n';
     }
     std::cerr << '\n';
 }

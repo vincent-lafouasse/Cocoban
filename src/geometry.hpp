@@ -15,6 +15,8 @@ struct IntVec {
 
     [[nodiscard]] IntVec scaleUp(i32 scale) const;
 
+    [[nodiscard]] std::string str() const;
+
     IntVec operator+(const IntVec& other) const;
     bool operator==(const IntVec& other) const;
     bool operator!=(const IntVec& other) const;
