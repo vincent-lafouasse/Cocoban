@@ -9,7 +9,9 @@ Board Board::load(const std::string& path)
 {
     std::ifstream input(path);
     if (!input.good()) {
-        std::cout << "Failed to open file " << path << std::endl;
+        std::cout << std::format("Failed to open file {}", path);
+        std::cerr << std::endl;
+        std::exit(1);
     }
 
     std::vector<std::string> data = {""};
