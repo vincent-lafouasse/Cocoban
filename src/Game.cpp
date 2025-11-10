@@ -61,7 +61,7 @@ std::vector<Position> bfs(const Board& board, Position start)
     queue.push(start);
 
     while (!queue.empty()) {
-        Position e = queue.back();
+        Position e = queue.front();
         explored.push_back(e);
         queue.pop();
 
