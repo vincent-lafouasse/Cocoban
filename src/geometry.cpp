@@ -48,7 +48,7 @@ Direction::Direction(Inner inner) : inner(inner) {}
 
 IntVec Direction::asVec() const
 {
-    const IntVec zero = {0, 0};
+    constexpr IntVec zero = {0, 0};
 
     switch (inner) {
         case Up:
