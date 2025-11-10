@@ -1,6 +1,6 @@
 #include "geometry.hpp"
 
-#include <sstream>
+#include <format>
 
 IntVec IntVec::up() const
 {
@@ -41,10 +41,7 @@ bool IntVec::operator!=(const IntVec& other) const
 
 std::string IntVec::str() const
 {
-    std::stringstream ss;
-
-    ss << "{ " << this->x << ", " << this->y << " }";
-    return ss.str();
+    return std::format("{{ {}, {} }}", x, y);
 }
 
 Direction::Direction(Inner inner) : inner(inner) {}
