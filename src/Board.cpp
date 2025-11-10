@@ -5,6 +5,20 @@
 #include <iostream>
 #include <numeric>
 
+namespace {
+void padToSameLength(std::vector<std::string>& lines)
+{
+    u32 maxLen = std::transform_reduce(
+        lines.cbegin(), lines.cend(), static_cast<u32>(0),
+        [](u32 acc, u32 e) { return std::max(acc, e); },
+        [](const std::string& line) { return line.size(); });
+
+    for (std::string& line : lines) {
+        line += std::string(maxLen - line.size(), ' ');
+    }
+}
+}  // namespace
+
 Board Board::load(const std::string& path)
 {
     std::ifstream input(path);
@@ -14,20 +28,13 @@ Board Board::load(const std::string& path)
         std::exit(1);
     }
 
+    // append a blank line at the top for drawing stuff
     std::vector<std::string> data = {""};
 
     for (std::string line; std::getline(input, line);) {
         data.push_back(line);
     }
-
-    u32 maxLen = std::transform_reduce(
-        data.cbegin(), data.cend(), static_cast<u32>(0),
-        [](u32 acc, u32 e) { return std::max(acc, e); },
-        [](const std::string& line) { return line.size(); });
-
-    for (std::string& line : data) {
-        line += std::string(maxLen - line.size(), ' ');
-    }
+    padToSameLength(data);
 
     return {data};
 }
