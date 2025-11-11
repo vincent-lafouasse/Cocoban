@@ -116,7 +116,7 @@ void Game::update(Direction action)
     using T = decltype(Game::numberOfFilledHoles());
     return std::transform_reduce(
         state.boxes.cbegin(), state.boxes.cend(), static_cast<T>(0),
-        std::plus<T>(), [&](const Position& box) {
+        std::plus<>(), [&](const Position& box) {
             return static_cast<T>(board.at(box) == Board::Hole);
         });
 }
