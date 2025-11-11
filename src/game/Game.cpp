@@ -5,6 +5,7 @@
 #include <iostream>
 #include <numeric>
 #include <queue>
+#include <set>
 
 Game::Game(const Board& board) : board(board), state()
 {
@@ -28,26 +29,20 @@ Game::Game(const Board& board) : board(board), state()
 namespace {
 using Position = Game::Position;
 
-template <typename T>
-bool vectorContains(const std::vector<T>& v, T e)
+std::set<Position> bfs(const Board& board, Position start)
 {
-    return std::ranges::find(v, e) != v.cend();
-}
-
-std::vector<Position> bfs(const Board& board, Position start)
-{
-    std::vector<Position> explored;
+    std::set<Position> explored;
     std::queue<Position> queue;
     queue.push(start);
 
     while (!queue.empty()) {
         const Position e = queue.front();
-        explored.push_back(e);
+        explored.insert(e);
         queue.pop();
 
         for (const Direction d : Direction::all()) {
             const Position candidate = e + d.asVec();
-            if (vectorContains(explored, candidate)) {
+            if (explored.contains(candidate)) {
                 continue;
             }
             if (!board.inBounds(candidate) ||
@@ -65,14 +60,14 @@ std::vector<Position> bfs(const Board& board, Position start)
 
 void Game::computeInaccessible()
 {
-    std::vector<Position> accessible = bfs(this->board, this->state.player);
+    std::set<Position> accessible = bfs(this->board, this->state.player);
 
     for (i32 x = 0; x < board.width(); x++) {
         for (i32 y = 0; y < board.height(); y++) {
             const Position pos = {x, y};
             Board::Tile& tile = board.at(pos);
 
-            if (tile != Board::Wall && !vectorContains(accessible, pos)) {
+            if (tile != Board::Wall && !accessible.contains(pos)) {
                 tile = Board::Outside;
             }
         }
