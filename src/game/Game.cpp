@@ -113,10 +113,11 @@ void Game::update(Direction action)
 
 [[nodiscard]] u32 Game::numberOfFilledHoles() const
 {
+    using T = decltype (Game::numberOfFilledHoles());
     return std::transform_reduce(
-        state.boxes.cbegin(), state.boxes.cend(), static_cast<u32>(0),
-        std::plus<>(), [&](const Position& box) {
-            return static_cast<u32>(board.at(box) == Board::Hole);
+        state.boxes.cbegin(), state.boxes.cend(), static_cast<T>(0),
+        std::plus<T>(), [&](const Position& box) {
+            return static_cast<T>(board.at(box) == Board::Hole);
         });
 }
 
