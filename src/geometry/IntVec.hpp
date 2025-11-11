@@ -20,4 +20,5 @@ struct IntVec {
     IntVec operator+(const IntVec& other) const;
     bool operator==(const IntVec& other) const;
     bool operator!=(const IntVec& other) const;
+    bool operator<(const IntVec& other) const;
 };

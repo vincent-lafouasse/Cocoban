@@ -43,3 +43,12 @@ std::string IntVec::str() const
 {
     return std::format("{{ {}, {} }}", x, y);
 }
+
+bool IntVec::operator<(const IntVec& other) const
+{
+    if (x < other.x)
+        return true;
+    if (x > other.x)
+        return false;
+    return y < other.y;
+}
