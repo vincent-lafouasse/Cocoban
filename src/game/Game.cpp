@@ -5,7 +5,7 @@
 #include <iostream>
 #include <numeric>
 #include <queue>
-#include <set>
+#include <unordered_set>
 
 Game::Game(const Board& board) : board(board), state()
 {
@@ -26,12 +26,22 @@ Game::Game(const Board& board) : board(board), state()
     this->computeInaccessible();
 }
 
+template <>
+struct std::hash<IntVec> {
+    std::size_t operator()(const IntVec& p) const noexcept
+    {
+        std::size_t h1 = std::hash<decltype(p.x)>{}(p.x);
+        std::size_t h2 = std::hash<decltype(p.y)>{}(p.y);
+        return h1 ^ (h2 << 1);
+    }
+};
+
 namespace {
 using Position = Game::Position;
 
-std::set<Position> bfs(const Board& board, Position start)
+std::unordered_set<Position> bfs(const Board& board, Position start)
 {
-    std::set<Position> explored;
+    std::unordered_set<Position> explored;
     std::queue<Position> queue;
     queue.push(start);
 
@@ -60,7 +70,8 @@ std::set<Position> bfs(const Board& board, Position start)
 
 void Game::computeInaccessible()
 {
-    std::set<Position> accessible = bfs(this->board, this->state.player);
+    std::unordered_set<Position> accessible =
+        bfs(this->board, this->state.player);
 
     for (i32 x = 0; x < board.width(); x++) {
         for (i32 y = 0; y < board.height(); y++) {
